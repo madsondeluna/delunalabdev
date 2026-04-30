@@ -75,7 +75,7 @@ export function Nav() {
           style={{ display: "flex", gap: "2rem", alignItems: "center" }}
         >
           {links.map((link) => (
-            <NavLink key={link.href} href={link.href} label={link.label} />
+            <NavLink key={link.href} href={link.href} label={link.label} dark={scrolled} />
           ))}
           <ThemeToggle />
         </nav>
@@ -151,9 +151,9 @@ export function Nav() {
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "0.875rem",
-                color: "var(--muted)",
+                color: "#748cab",
                 padding: "0.875rem 0",
-                borderBottom: "1px solid var(--border)",
+                borderBottom: "1px solid #2a3f5c",
                 transition: "color 0.2s ease",
               }}
             >
@@ -166,7 +166,7 @@ export function Nav() {
   );
 }
 
-function NavLink({ href, label }: { href: string; label: string }) {
+function NavLink({ href, label, dark }: { href: string; label: string; dark: boolean }) {
   const [hovered, setHovered] = useState(false);
   return (
     <a
@@ -175,7 +175,9 @@ function NavLink({ href, label }: { href: string; label: string }) {
       onMouseLeave={() => setHovered(false)}
       style={{
         fontSize: "0.8125rem",
-        color: hovered ? "var(--text)" : "var(--muted)",
+        color: hovered
+          ? dark ? "#f4f6f9" : "var(--text)"
+          : dark ? "#748cab" : "var(--muted)",
         transition: "color 0.2s ease",
       }}
     >
