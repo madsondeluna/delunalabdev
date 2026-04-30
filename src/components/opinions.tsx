@@ -42,7 +42,7 @@ const opinions = [
 
 export function Opinions() {
   return (
-    <section id="opinions" style={{ padding: "100px 0" }}>
+    <section id="opinions" className="section-pad" style={{ padding: "100px 0" }}>
       <div
         style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 2.5rem" }}
       >
@@ -65,6 +65,7 @@ export function Opinions() {
                 }}
               >
                 <div
+                  className="opinions-row"
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
@@ -86,6 +87,7 @@ export function Opinions() {
                     {post.title}
                   </h3>
                   <div
+                    className="opinions-meta"
                     style={{
                       display: "flex",
                       flexDirection: "column",

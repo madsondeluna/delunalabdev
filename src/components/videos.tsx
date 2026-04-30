@@ -61,7 +61,7 @@ const categoryColor: Record<string, string> = {
 
 export function Videos() {
   return (
-    <section id="videos" style={{ padding: "100px 0" }}>
+    <section id="videos" className="section-pad" style={{ padding: "100px 0" }}>
       <div
         style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 2.5rem" }}
       >
@@ -74,7 +74,7 @@ export function Videos() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fill, minmax(min(300px, 100%), 1fr))",
             gap: "1px",
             background: "var(--border)",
           }}

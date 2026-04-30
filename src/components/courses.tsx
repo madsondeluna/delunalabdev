@@ -66,7 +66,7 @@ const levelColor: Record<string, string> = {
 
 export function Courses() {
   return (
-    <section id="courses" style={{ padding: "100px 0" }}>
+    <section id="courses" className="section-pad" style={{ padding: "100px 0" }}>
       <div
         style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 2.5rem" }}
       >
@@ -79,7 +79,7 @@ export function Courses() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fill, minmax(min(320px, 100%), 1fr))",
             gap: "1px",
             background: "var(--border)",
           }}

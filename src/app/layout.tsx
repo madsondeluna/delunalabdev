@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 
@@ -21,6 +21,11 @@ const cormorant = Cormorant_Garamond({
 export const metadata: Metadata = {
   title: "deluna lab",
   description: "lab of solutions development",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({

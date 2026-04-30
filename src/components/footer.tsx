@@ -38,7 +38,7 @@ export function Footer() {
         </p>
       </div>
 
-      <div style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
+      <div className="footer-links" style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
         <a
           href="mailto:madsondeluna@gmail.com"
           className="link-muted"
@@ -50,6 +50,7 @@ export function Footer() {
           madsondeluna@gmail.com
         </a>
         <span
+          className="footer-separator"
           style={{
             width: "1px",
             height: "12px",

@@ -48,7 +48,7 @@ const statusStyle: Record<string, { color: string; label: string }> = {
 
 export function Apps() {
   return (
-    <section id="apps" style={{ padding: "100px 0" }}>
+    <section id="apps" className="section-pad" style={{ padding: "100px 0" }}>
       <div
         style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 2.5rem" }}
       >

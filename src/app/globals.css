@@ -103,3 +103,34 @@ a {
 .link-secondary:hover {
   color: var(--text);
 }
+
+@media (max-width: 768px) {
+  .nav-desktop {
+    display: none !important;
+  }
+  .nav-mobile-controls {
+    display: flex !important;
+  }
+  .hero-canvas-wrap {
+    display: none !important;
+  }
+  .section-pad {
+    padding: 64px 0 !important;
+  }
+  .opinions-row {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+  .opinions-meta {
+    flex-direction: row !important;
+    gap: 1rem !important;
+    align-items: flex-start !important;
+  }
+  .footer-links {
+    flex-wrap: wrap !important;
+    gap: 1rem !important;
+  }
+  .footer-separator {
+    display: none !important;
+  }
+}

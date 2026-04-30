@@ -19,8 +19,10 @@ export function Hero() {
 
   return (
     <section
+      className="section-pad"
       style={{
         minHeight: "100svh",
+        padding: 0,
         position: "relative",
         overflow: "hidden",
         display: "flex",
@@ -28,8 +30,8 @@ export function Hero() {
         justifyContent: "center",
       }}
     >
-      {/* canvas — absoluto, cobre a metade direita + invade pra esquerda */}
       <div
+        className="hero-canvas-wrap"
         style={{
           position: "absolute",
           top: 0,
