@@ -59,9 +59,9 @@ export function Footer() {
         />
         <div style={{ display: "flex", gap: "1.5rem" }}>
           {[
-            { label: "github", url: "#" },
-            { label: "youtube", url: "#" },
-            { label: "linkedin", url: "#" },
+            { label: "github", url: "https://github.com/madsondeluna" },
+            { label: "twitter", url: "https://x.com/madsondeluna" },
+            { label: "linkedin", url: "https://www.linkedin.com/in/madsonaragao/" },
           ].map((link) => (
             <a
               key={link.label}
