@@ -14,6 +14,7 @@ const links = [
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 40);
@@ -27,12 +28,25 @@ export function Nav() {
     window.addEventListener("scroll", handler, { passive: true, once: true });
   }, [menuOpen]);
 
-  const bg =
-    scrolled || menuOpen ? "rgba(8,8,8,0.95)" : "transparent";
-  const blur =
-    scrolled || menuOpen ? "blur(16px)" : "none";
-  const border =
-    scrolled ? "var(--border)" : "transparent";
+  useEffect(() => {
+    const check = () =>
+      setIsDark(document.documentElement.classList.contains("dark"));
+    check();
+    const obs = new MutationObserver(check);
+    obs.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    return () => obs.disconnect();
+  }, []);
+
+  const activeBg = isDark
+    ? "rgba(13, 19, 33, 0.88)"
+    : "rgba(244, 246, 249, 0.88)";
+  const bg = scrolled || menuOpen ? activeBg : "transparent";
+  const blur = scrolled || menuOpen ? "blur(20px)" : "none";
+  const border = scrolled ? "var(--border)" : "transparent";
+  const onDarkBg = isDark && (scrolled || menuOpen);
 
   return (
     <header
@@ -75,7 +89,7 @@ export function Nav() {
           style={{ display: "flex", gap: "2rem", alignItems: "center" }}
         >
           {links.map((link) => (
-            <NavLink key={link.href} href={link.href} label={link.label} dark={scrolled} />
+            <NavLink key={link.href} href={link.href} label={link.label} dark={onDarkBg} />
           ))}
           <ThemeToggle />
         </nav>
@@ -151,9 +165,9 @@ export function Nav() {
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "0.875rem",
-                color: "#748cab",
+                color: "var(--muted)",
                 padding: "0.875rem 0",
-                borderBottom: "1px solid #2a3f5c",
+                borderBottom: "1px solid var(--border)",
                 transition: "color 0.2s ease",
               }}
             >
