@@ -1,5 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import { FadeIn } from "./fade-in";
 import { SectionHeader } from "./section-header";
+import { Modal } from "./modal";
 
 const apps = [
   {
@@ -46,7 +50,11 @@ const statusStyle: Record<string, { color: string; label: string }> = {
   development: { color: "#60a5fa", label: "in development" },
 };
 
+type App = (typeof apps)[number];
+
 export function Apps() {
+  const [selected, setSelected] = useState<App | null>(null);
+
   return (
     <section id="apps" className="section-pad" style={{ padding: "100px 0" }}>
       <div
@@ -68,15 +76,16 @@ export function Apps() {
         >
           {apps.map((app, i) => (
             <FadeIn key={app.id} delay={i * 80}>
-              <a
-                href={app.url}
+              <div
                 className="hover-surface"
+                onClick={() => setSelected(app)}
                 style={{
                   display: "flex",
                   gap: "2rem",
                   padding: "2rem",
                   background: "var(--surface)",
                   alignItems: "flex-start",
+                  cursor: "pointer",
                 }}
               >
                 <div style={{ flex: 1 }}>
@@ -152,11 +161,83 @@ export function Apps() {
                 >
                   &#8594;
                 </span>
-              </a>
+              </div>
             </FadeIn>
           ))}
         </div>
       </div>
+
+      {selected && (
+        <Modal onClose={() => setSelected(null)}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+              <h2
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "clamp(1.5rem, 4vw, 2.25rem)",
+                  fontWeight: 300,
+                  lineHeight: 1.1,
+                  color: "var(--text)",
+                  flex: 1,
+                }}
+              >
+                {selected.title}
+              </h2>
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.6rem",
+                  color: statusStyle[selected.status]?.color ?? "var(--muted)",
+                  letterSpacing: "0.08em",
+                  flexShrink: 0,
+                }}
+              >
+                {statusStyle[selected.status]?.label}
+              </span>
+            </div>
+
+            <p
+              style={{
+                fontSize: "0.9rem",
+                color: "var(--muted)",
+                lineHeight: 1.7,
+              }}
+            >
+              {selected.description}
+            </p>
+
+            <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+              {selected.tags.map((tag) => (
+                <span
+                  key={tag}
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "0.625rem",
+                    color: "var(--muted)",
+                    border: "1px solid var(--border)",
+                    padding: "2px 8px",
+                    borderRadius: "2px",
+                  }}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            {selected.url !== "#" && (
+              <a
+                href={selected.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link-cta"
+                style={{ alignSelf: "flex-start" }}
+              >
+                open application &#8594;
+              </a>
+            )}
+          </div>
+        </Modal>
+      )}
     </section>
   );
 }

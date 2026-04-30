@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FadeIn } from "./fade-in";
 import { SectionHeader } from "./section-header";
+import { Modal } from "./modal";
 
 const items = [
   { id: 1, label: "genomic variant browser", aspect: "16/9", shade: "var(--surface)" },
@@ -57,9 +58,12 @@ function buildLayout(containerWidth: number): Row[] {
   return rows;
 }
 
+type GalleryItem = (typeof items)[number];
+
 export function Gallery() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [rows, setRows] = useState<Row[]>([]);
+  const [selected, setSelected] = useState<GalleryItem | null>(null);
 
   useEffect(() => {
     function compute() {
@@ -92,6 +96,7 @@ export function Gallery() {
                 <FadeIn key={item.id} delay={ii * 40}>
                   <div
                     className="hover-fade"
+                    onClick={() => setSelected(item)}
                     style={{
                       width: row.widths[ii],
                       height: row.height,
@@ -120,6 +125,43 @@ export function Gallery() {
           ))}
         </div>
       </div>
+
+      {selected && (
+        <Modal onClose={() => setSelected(null)}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+            <div
+              style={{
+                aspectRatio: "16/9",
+                background: selected.shade,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.6875rem",
+                  color: "var(--muted)",
+                }}
+              >
+                preview
+              </span>
+            </div>
+            <h2
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(1.4rem, 4vw, 2rem)",
+                fontWeight: 300,
+                lineHeight: 1.2,
+                color: "var(--text)",
+              }}
+            >
+              {selected.label}
+            </h2>
+          </div>
+        </Modal>
+      )}
     </section>
   );
 }

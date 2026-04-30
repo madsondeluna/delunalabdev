@@ -1,44 +1,6 @@
 import { FadeIn } from "./fade-in";
 import { SectionHeader } from "./section-header";
-
-const opinions = [
-  {
-    id: 1,
-    title: "why reproducibility matters more than novelty in science",
-    date: "2025-03-10",
-    readTime: "5 min",
-    excerpt:
-      "the most impactful scientific contribution i have seen is a well-documented pipeline anyone can reproduce. here is why i now optimize for that first.",
-    tags: ["science", "open-source"],
-  },
-  {
-    id: 2,
-    title: "python is not slow. your code is slow.",
-    date: "2025-02-18",
-    readTime: "4 min",
-    excerpt:
-      "most performance complaints about python come from not using numpy, pandas, or polars correctly. profiling before rewriting in rust is always the right move.",
-    tags: ["python", "performance"],
-  },
-  {
-    id: 3,
-    title: "the real cost of complexity in research software",
-    date: "2025-01-30",
-    readTime: "6 min",
-    excerpt:
-      "a script that three people can understand beats an architecture that one person designed. in research, software outlives the people who wrote it.",
-    tags: ["software", "research"],
-  },
-  {
-    id: 4,
-    title: "how i stopped dreading the terminal and started building with it",
-    date: "2024-12-05",
-    readTime: "7 min",
-    excerpt:
-      "the command line is not for power users only. it is the fastest path from idea to prototype for anyone working with data or systems.",
-    tags: ["unix", "workflow"],
-  },
-];
+import { opinions } from "@/data/opinions";
 
 export function Opinions() {
   return (
@@ -56,7 +18,7 @@ export function Opinions() {
           {opinions.map((post, i) => (
             <FadeIn key={post.id} delay={i * 80}>
               <a
-                href="#"
+                href={`/opinions/${post.slug}`}
                 className="hover-fade"
                 style={{
                   display: "block",

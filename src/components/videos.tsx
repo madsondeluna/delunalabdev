@@ -1,5 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import { FadeIn } from "./fade-in";
 import { SectionHeader } from "./section-header";
+import { Modal } from "./modal";
 
 const videos = [
   {
@@ -59,7 +63,11 @@ const categoryColor: Record<string, string> = {
   workflow: "#7a4a2d",
 };
 
+type Video = (typeof videos)[number];
+
 export function Videos() {
+  const [selected, setSelected] = useState<Video | null>(null);
+
   return (
     <section id="videos" className="section-pad" style={{ padding: "100px 0" }}>
       <div
@@ -81,14 +89,15 @@ export function Videos() {
         >
           {videos.map((video, i) => (
             <FadeIn key={video.id} delay={i * 60}>
-              <a
-                href={video.url}
+              <div
                 className="hover-surface"
+                onClick={() => setSelected(video)}
                 style={{
                   display: "flex",
                   flexDirection: "column",
                   height: "100%",
                   background: "var(--surface)",
+                  cursor: "pointer",
                 }}
               >
                 <div
@@ -165,11 +174,107 @@ export function Videos() {
                     {video.title}
                   </h3>
                 </div>
-              </a>
+              </div>
             </FadeIn>
           ))}
         </div>
       </div>
+
+      {selected && (
+        <Modal onClose={() => setSelected(null)}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+            <div
+              style={{
+                aspectRatio: "16/9",
+                background: "var(--dim)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                position: "relative",
+              }}
+            >
+              <div
+                style={{
+                  width: "52px",
+                  height: "52px",
+                  borderRadius: "50%",
+                  border: "1px solid var(--border-hover)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <span style={{ color: "var(--muted)", fontSize: "1rem", marginLeft: "3px" }}>
+                  &#9654;
+                </span>
+              </div>
+              <span
+                style={{
+                  position: "absolute",
+                  bottom: "0.75rem",
+                  right: "0.75rem",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.6875rem",
+                  color: "var(--muted)",
+                  background: "var(--bg)",
+                  padding: "2px 6px",
+                }}
+              >
+                {selected.duration}
+              </span>
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.5875rem",
+                  color: "#fff",
+                  background: categoryColor[selected.category] ?? "#333",
+                  padding: "2px 8px",
+                  borderRadius: "2px",
+                  letterSpacing: "0.08em",
+                }}
+              >
+                {selected.category}
+              </span>
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.625rem",
+                  color: "var(--muted)",
+                }}
+              >
+                {selected.platform}
+              </span>
+            </div>
+
+            <h2
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(1.4rem, 4vw, 2rem)",
+                fontWeight: 300,
+                lineHeight: 1.2,
+                color: "var(--text)",
+              }}
+            >
+              {selected.title}
+            </h2>
+
+            {selected.url !== "#" && (
+              <a
+                href={selected.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link-cta"
+                style={{ alignSelf: "flex-start" }}
+              >
+                watch on {selected.platform} &#8594;
+              </a>
+            )}
+          </div>
+        </Modal>
+      )}
     </section>
   );
 }

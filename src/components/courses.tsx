@@ -1,5 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import { FadeIn } from "./fade-in";
 import { SectionHeader } from "./section-header";
+import { Modal } from "./modal";
 
 const courses = [
   {
@@ -10,6 +14,7 @@ const courses = [
       "from zero to functional scripts for biological data analysis. covers pandas, biopython, and sequence manipulation.",
     tags: ["python", "bioinformatics", "data"],
     status: "available",
+    url: "#",
   },
   {
     id: 2,
@@ -19,6 +24,7 @@ const courses = [
       "scalable and reproducible bioinformatics workflows using nextflow dsl2, containers, and hpc environments.",
     tags: ["nextflow", "bash", "docker"],
     status: "coming soon",
+    url: "#",
   },
   {
     id: 3,
@@ -28,6 +34,7 @@ const courses = [
       "build tools and interactive dashboards to share your research. from api design to deployment.",
     tags: ["react", "python", "fastapi"],
     status: "available",
+    url: "#",
   },
   {
     id: 4,
@@ -37,6 +44,7 @@ const courses = [
       "practical unix skills for researchers: file systems, shell scripting, remote servers, and automation.",
     tags: ["bash", "linux", "hpc"],
     status: "available",
+    url: "#",
   },
   {
     id: 5,
@@ -46,6 +54,7 @@ const courses = [
       "turn raw data into clear, publication-ready figures using matplotlib, seaborn, and plotly.",
     tags: ["python", "plotly", "matplotlib"],
     status: "available",
+    url: "#",
   },
   {
     id: 6,
@@ -55,6 +64,7 @@ const courses = [
       "apply classical and deep learning methods to genomics, transcriptomics, and proteomics data.",
     tags: ["python", "scikit-learn", "pytorch"],
     status: "coming soon",
+    url: "#",
   },
 ];
 
@@ -64,7 +74,11 @@ const levelColor: Record<string, string> = {
   advanced: "#7a2e2e",
 };
 
+type Course = (typeof courses)[number];
+
 export function Courses() {
+  const [selected, setSelected] = useState<Course | null>(null);
+
   return (
     <section id="courses" className="section-pad" style={{ padding: "100px 0" }}>
       <div
@@ -88,6 +102,7 @@ export function Courses() {
             <FadeIn key={course.id} delay={i * 60}>
               <div
                 className="hover-surface"
+                onClick={() => setSelected(course)}
                 style={{
                   background: "var(--surface)",
                   padding: "2rem",
@@ -95,6 +110,7 @@ export function Courses() {
                   flexDirection: "column",
                   gap: "1rem",
                   height: "100%",
+                  cursor: "pointer",
                 }}
               >
                 <div
@@ -176,6 +192,93 @@ export function Courses() {
           ))}
         </div>
       </div>
+
+      {selected && (
+        <Modal onClose={() => setSelected(null)}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "1rem" }}>
+              <h2
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "clamp(1.5rem, 4vw, 2.25rem)",
+                  fontWeight: 300,
+                  lineHeight: 1.1,
+                  color: "var(--text)",
+                }}
+              >
+                {selected.title}
+              </h2>
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.625rem",
+                  color: selected.status === "available" ? "#4ade80" : "var(--muted)",
+                  letterSpacing: "0.06em",
+                  flexShrink: 0,
+                  marginTop: "0.5rem",
+                }}
+              >
+                {selected.status}
+              </span>
+            </div>
+
+            <span
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.625rem",
+                letterSpacing: "0.1em",
+                color: "#fff",
+                background: levelColor[selected.level] ?? "#333",
+                padding: "2px 8px",
+                borderRadius: "2px",
+                alignSelf: "flex-start",
+              }}
+            >
+              {selected.level}
+            </span>
+
+            <p
+              style={{
+                fontSize: "0.9rem",
+                color: "var(--muted)",
+                lineHeight: 1.7,
+              }}
+            >
+              {selected.description}
+            </p>
+
+            <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+              {selected.tags.map((tag) => (
+                <span
+                  key={tag}
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "0.625rem",
+                    color: "var(--muted)",
+                    border: "1px solid var(--border)",
+                    padding: "2px 8px",
+                    borderRadius: "2px",
+                  }}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            {selected.url !== "#" && (
+              <a
+                href={selected.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link-cta"
+                style={{ alignSelf: "flex-start" }}
+              >
+                access course &#8594;
+              </a>
+            )}
+          </div>
+        </Modal>
+      )}
     </section>
   );
 }
