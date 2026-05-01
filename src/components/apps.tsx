@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FadeIn } from "./fade-in";
-import { apps, statusStyle, tagStyle, typeStyle, type App } from "@/data/apps";
+import { apps, statusStyle, type App } from "@/data/apps";
 
 function AppCard({ app, index }: { app: App; index: number }) {
   const isLive = app.url !== "#";
@@ -56,13 +56,11 @@ function AppCard({ app, index }: { app: App; index: number }) {
             {app.type.map((t) => (
               <span
                 key={t}
+                className={`badge-tag badge-type-${t}`}
                 style={{
                   fontFamily: "var(--font-mono)",
                   fontSize: "0.625rem",
                   letterSpacing: "0.1em",
-                  color: typeStyle[t]?.color ?? "var(--muted)",
-                  background: typeStyle[t]?.bg ?? "transparent",
-                  border: `1px solid ${typeStyle[t]?.color ?? "var(--border)"}40`,
                   padding: "2px 8px",
                   borderRadius: "2px",
                 }}
@@ -72,13 +70,11 @@ function AppCard({ app, index }: { app: App; index: number }) {
             ))}
           </div>
           <span
+            className={`badge-tag badge-status-${app.status}`}
             style={{
               fontFamily: "var(--font-mono)",
               fontSize: "0.625rem",
               letterSpacing: "0.1em",
-              color: statusStyle[app.status]?.color ?? "var(--muted)",
-              background: statusStyle[app.status]?.bg ?? "transparent",
-              border: `1px solid ${statusStyle[app.status]?.border ?? "var(--border)"}`,
               padding: "2px 8px",
               borderRadius: "2px",
             }}
@@ -110,25 +106,20 @@ function AppCard({ app, index }: { app: App; index: number }) {
         </p>
 
         <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
-          {app.tags.map((tag) => {
-            const ts = tagStyle[tag];
-            return (
-              <span
-                key={tag}
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "0.6rem",
-                  color: ts?.color ?? "var(--muted)",
-                  background: ts?.bg ?? "transparent",
-                  border: `1px solid ${ts?.border ?? "var(--border)"}`,
-                  padding: "2px 7px",
-                  borderRadius: "2px",
-                }}
-              >
-                {tag}
-              </span>
-            );
-          })}
+          {app.tags.map((tag) => (
+            <span
+              key={tag}
+              className={`badge-tag badge-${tag}`}
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.6rem",
+                padding: "2px 7px",
+                borderRadius: "2px",
+              }}
+            >
+              {tag}
+            </span>
+          ))}
         </div>
       </div>
     </FadeIn>

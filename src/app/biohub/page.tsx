@@ -52,10 +52,6 @@ const tools = [
   },
 ];
 
-const statusStyle: Record<string, { color: string; bg: string; border: string }> = {
-  launched: { color: "#16a34a", bg: "rgba(34,197,94,0.10)",  border: "rgba(34,197,94,0.3)" },
-  beta:     { color: "#d97706", bg: "rgba(245,158,11,0.10)", border: "rgba(245,158,11,0.3)" },
-};
 
 export default function BiohubPage() {
   const year = new Date().getFullYear();
@@ -146,13 +142,11 @@ export default function BiohubPage() {
               >
                 <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-start" }}>
                   <span
+                    className={`badge-status-${tool.status}`}
                     style={{
                       fontFamily: "var(--font-mono)",
                       fontSize: "0.625rem",
                       letterSpacing: "0.1em",
-                      color: statusStyle[tool.status]?.color,
-                      background: statusStyle[tool.status]?.bg,
-                      border: `1px solid ${statusStyle[tool.status]?.border}`,
                       padding: "2px 8px",
                       borderRadius: "2px",
                     }}
