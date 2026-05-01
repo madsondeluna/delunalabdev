@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>try{var t=localStorage.getItem("theme");if(t==="dark")document.documentElement.classList.add("dark-mode");else if(t==="light")document.documentElement.classList.add("light-mode")}catch(e){}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEQPARAM</title>
+    
+    
+    
+    
+    <link rel="stylesheet" href="../_shared.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SEQPARAM</h1> <p id="typing-text">physicochemical parameter calculator for primary protein sequences</p> <nav class="main-nav">
+                <a href="/biohub" class="nav-link">← Back to BioHub</a>
+            </nav>
+        </header>
+
+        <main>
+            <div class="calculator-layout">
+                <div class="io-box">
+                    <h2>Input (FASTA Sequence)</h2>
+                    <textarea id="fasta-input" rows="12" placeholder=">Protein_ID&#10;MGQFYVMDDKKTVEQVIAEKEKEFGGKIKIVEFICFGEGLEKKTEDFAAEVAAQL"></textarea>
+                    <button id="calculate-btn">Calculate Parameters</button>
+                    <button id="clear-btn">Clear</button>
+                </div>
+
+                <div class="io-box">
+                    <h2>Calculated Parameters</h2>
+                    <div id="results-output" class="results-table-container">
+                        <p class="placeholder-text">Results will be displayed here...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+    </div>
+
+    <script src="js/bioparam.js"></script>
+    <footer>
+        <span>&copy; 2026 gromads</span>
+        <div class="footer-links">
+            <a href="https://madsondeluna.com">portfolio</a>
+            <a href="https://github.com/madsondeluna">github</a>
+            <a href="https://x.com/madsondeluna">twitter</a>
+            <a href="https://www.linkedin.com/in/madsonaragao/">linkedin</a>
+            <a href="mailto:madsondeluna@gmail.com">mail</a>
+        </div>
+    </footer>
+</body>
+</html>

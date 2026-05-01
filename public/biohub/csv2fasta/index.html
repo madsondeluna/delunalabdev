@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>try{var t=localStorage.getItem("theme");if(t==="dark")document.documentElement.classList.add("dark-mode");else if(t==="light")document.documentElement.classList.add("light-mode")}catch(e){}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV2FASTA</title>
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="../_shared.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CSV to FASTA Converter</h1>
+            <p id="typing-text">convert csv files to fasta format by selecting id and sequence columns</p>
+            <nav>
+                <a href="/biohub" class="nav-link">← Back to BioHub</a>
+            </nav>
+        </header>
+
+        <main>
+            <div class="converter-grid">
+                <div class="io-box">
+                    <h2>CSV Input</h2>
+                    <label for="csv-upload" class="upload-btn">Upload CSV File</label>
+                    <input type="file" id="csv-upload" accept=".csv" hidden>
+                    <textarea id="csv-input" rows="12" placeholder="Or paste CSV content here...&#10;&#10;Example:&#10;ID,Sequence&#10;protein1,MKTAYIAKQRQ&#10;protein2,ARNDCEQGH"></textarea>
+                    
+                    <div class="column-selector">
+                        <div class="selector-group">
+                            <label for="id-column">ID Column:</label>
+                            <select id="id-column">
+                                <option value="">Auto-detect</option>
+                            </select>
+                        </div>
+                        <div class="selector-group">
+                            <label for="seq-column">Sequence Column:</label>
+                            <select id="seq-column">
+                                <option value="">Auto-detect</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="io-box">
+                    <h2>FASTA Output</h2>
+                    <div class="output-controls">
+                        <button id="copy-btn">Copy to Clipboard</button>
+                        <button id="download-btn">Download FASTA</button>
+                    </div>
+                    <textarea id="fasta-output" rows="15" readonly placeholder="FASTA formatted output will appear here..."></textarea>
+                    <div id="stats" class="stats-box"></div>
+                </div>
+
+                <button id="convert-btn">Convert</button>
+                <button id="clear-btn">Clear</button>
+            </div> 
+        </main>
+    </div>
+
+    <script src="js/csv2fasta.js"></script>
+    <footer>
+        <span>&copy; 2026 gromads</span>
+        <div class="footer-links">
+            <a href="https://madsondeluna.com">portfolio</a>
+            <a href="https://github.com/madsondeluna">github</a>
+            <a href="https://x.com/madsondeluna">twitter</a>
+            <a href="https://www.linkedin.com/in/madsonaragao/">linkedin</a>
+            <a href="mailto:madsondeluna@gmail.com">mail</a>
+        </div>
+    </footer>
+</body>
+</html>

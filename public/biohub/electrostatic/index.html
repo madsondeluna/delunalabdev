@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>try{var t=localStorage.getItem("theme");if(t==="dark")document.documentElement.classList.add("dark-mode");else if(t==="light")document.documentElement.classList.add("light-mode")}catch(e){}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculate and visualize electrostatic surface potential using PDB2PQR/APBS">
+    <title>Electrostatic Surface | BioHub</title>
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="../_shared.css">
+    <script src="https://unpkg.com/ngl@2.0.0-dev.38/dist/ngl.js"></script>
+    <script src="../molecular-viewer.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>Electrostatic Surface Calculator</h1>
+                <p id="typing-text">calculate electrostatic surface potential using pdb2pqr and apbs</p>
+            </div>
+            <nav>
+                <a href="/biohub" class="nav-link">← Back to BioHub</a>
+            </nav>
+        </header>
+
+        <main>
+            <div class="info-note" style="background: rgba(255, 193, 7, 0.1); border: 1px solid #ffc107; border-radius: 4px; padding: 1rem; margin-bottom: 1.5rem;">
+                <h3 style="margin: 0 0 0.5rem 0; color: #ffc107; font-size: 1rem;">Important: API Instability Notice</h3>
+                <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; line-height: 1.5;">
+                    The <strong>PDB2PQR/APBS web server API is undergoing changes</strong>, which may cause connection instability or failures. This is <u>not an error in this tool</u>, it's a temporary limitation.
+                </p>
+                <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; line-height: 1.5;">
+                    <strong>Automatic Fallback:</strong> If the APBS server fails, the tool will automatically switch to a 
+                    <em>simplified electrostatic model</em> based on residue charges (ARG/LYS: positive, ASP/GLU: negative). 
+                    While less accurate, this provides immediate results for quick analysis.
+                </p>
+                <p style="margin: 0; font-size: 0.9rem; line-height: 1.5;">
+                    <strong>Skip the Wait:</strong> Click <strong>"Use Simplified Mode"</strong> button to directly use the fallback model without trying APBS first.
+                </p>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.85rem; color: #999;">
+                    <strong>Simple Solution:</strong> Install a CORS browser extension (e.g., "CORS Unblock") or use local APBS installation for production work. See <code>CORS_SETUP.md</code> for details.
+                </p>
+            </div>
+            
+            <div class="converter-grid">
+                <div class="io-box">
+                    <h2>PDB Input</h2>
+                    <label for="pdb-upload" class="upload-btn">Upload PDB File</label>
+                    <input type="file" id="pdb-upload" accept=".pdb" hidden>
+                    <textarea 
+                        id="pdb-input" 
+                        rows="15" 
+                        placeholder="Or paste PDB content here..."></textarea>
+                    
+                    <div class="params-box">
+                        <h3>APBS Parameters</h3>
+                        <div class="param-group">
+                            <label for="forcefield">Force Field:</label>
+                            <select id="forcefield">
+                                <option value="AMBER">AMBER</option>
+                                <option value="CHARMM">CHARMM</option>
+                                <option value="PARSE">PARSE</option>
+                                <option value="TYL06">TYL06</option>
+                                <option value="PEOEPB">PEOEPB</option>
+                                <option value="SWANSON">SWANSON</option>
+                            </select>
+                            <span class="param-info">Charge assignment method</span>
+                        </div>
+                        <div class="param-group">
+                            <label for="ph">pH:</label>
+                            <input type="number" id="ph" value="7.0" min="0" max="14" step="0.1">
+                            <span class="param-info">Solution pH</span>
+                        </div>
+                        <div class="param-group">
+                            <label for="ion-conc">Ion Concentration (M):</label>
+                            <input type="number" id="ion-conc" value="0.15" min="0" max="1" step="0.01">
+                            <span class="param-info">Ionic strength</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="io-box">
+                    <h2>Electrostatic Results</h2>
+                    
+                    <div id="status-container" class="status-box">
+                        <p>Upload a PDB file and click "Calculate" to start</p>
+                    </div>
+
+                    <div id="viewer-container" style="display: none; margin: 20px 0;">
+                        <h3 style="font-size: 14px; margin-bottom: 10px;">3D Visualization</h3>
+                        <div class="viewer-controls" style="margin-bottom: 10px;">
+                            <button id="toggle-spin" class="control-button">Toggle Spin</button>
+                            <button id="center-view" class="control-button">Center View</button>
+                            <button id="toggle-surface" class="control-button">Toggle Surface</button>
+                        </div>
+                        <div id="viewport" style="width: 100%; height: 500px; background: #000; border-radius: 4px;"></div>
+                        <div style="margin-top: 10px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 4px;">
+                            <div style="font-size: 12px; font-weight: 500; margin-bottom: 8px; color: var(--color-text-secondary);">Electrostatic Potential Scale:</div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span style="font-size: 11px; color: var(--color-text-secondary);">-5 kT/e</span>
+                                <div style="flex: 1; height: 20px; background: linear-gradient(to right, #FF0000, #FF8888, #FFFFFF, #8888FF, #0000FF); border-radius: 4px;"></div>
+                                <span style="font-size: 11px; color: var(--color-text-secondary);">+5 kT/e</span>
+                            </div>
+                            <div style="margin-top: 8px; font-size: 11px; color: var(--color-text-secondary); text-align: center;">
+                                Red = Negative (acidic) | Blue = Positive (basic)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="results-container" style="display: none;">
+                        <h3>Analysis Summary</h3>
+                        <textarea id="results-output" rows="10" readonly placeholder="Results will appear here..."></textarea>
+                        <div class="output-controls">
+                            <button id="download-pqr">Download PQR</button>
+                            <button id="download-dx">Download DX (Potential Grid)</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button id="calculate-btn" style="flex: 2;">Calculate with APBS (Try Server First)</button>
+                    <button id="simple-mode-btn" style="flex: 1; background: var(--color-warning, #ffc107); border-color: var(--color-warning, #ffc107);">Use Simplified Mode</button>
+                </div>
+                <button id="clear-btn" style="margin-top: 10px; width: 100%;">Clear</button>
+            </div> 
+        </main>
+        
+    </div>
+
+    <script src="js/electrostatic-novo.js"></script>
+    <footer>
+        <span>&copy; 2026 gromads</span>
+        <div class="footer-links">
+            <a href="https://madsondeluna.com">portfolio</a>
+            <a href="https://github.com/madsondeluna">github</a>
+            <a href="https://x.com/madsondeluna">twitter</a>
+            <a href="https://www.linkedin.com/in/madsonaragao/">linkedin</a>
+            <a href="mailto:madsondeluna@gmail.com">mail</a>
+        </div>
+    </footer>
+</body>
+</html>

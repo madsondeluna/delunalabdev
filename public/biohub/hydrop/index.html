@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>try{var t=localStorage.getItem("theme");if(t==="dark")document.documentElement.classList.add("dark-mode");else if(t==="light")document.documentElement.classList.add("light-mode")}catch(e){}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hydrophobicity Plot</title>
+    
+    
+    
+    
+    <link rel="stylesheet" href="../_shared.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hydrophobicity Analyzer and Plot Generator</h1>
+            <p id="typing-text">kyte-doolittle hydrophobicity profile for protein sequences</p>
+            <nav>
+                <a href="/biohub" class="nav-link">← Back to BioHub</a>
+            </nav>
+        </header>
+
+        <main>
+            <div class="calculator-layout">
+                <div class="io-box">
+                    <h2>FASTA Sequence Input</h2>
+                    <textarea id="fasta-input" rows="10" placeholder=">Protein_ID&#10;MTEITAAMVKELRESTGAGMMDCKNALSETNGDFDKREKGLGKAAKKADRLAAEG&#10;"></textarea>
+                    
+                    <button id="calculate-btn">Generate Plot</button>
+                    <button id="clear-btn">Clear</button>
+                </div>
+
+                <div class="io-box">
+                    <h2>Kyte-Doolittle Hydrophobicity</h2>
+                    <div class="plot-container-hydro">
+                        <div id="hydrophobicity-plot"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+    </div>
+
+    <script src="js/hydrophobicity.js"></script>
+    <footer>
+        <span>&copy; 2026 gromads</span>
+        <div class="footer-links">
+            <a href="https://madsondeluna.com">portfolio</a>
+            <a href="https://github.com/madsondeluna">github</a>
+            <a href="https://x.com/madsondeluna">twitter</a>
+            <a href="https://www.linkedin.com/in/madsonaragao/">linkedin</a>
+            <a href="mailto:madsondeluna@gmail.com">mail</a>
+        </div>
+    </footer>
+</body>
+</html>

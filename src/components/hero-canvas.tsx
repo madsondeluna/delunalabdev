@@ -51,8 +51,8 @@ export function HeroCanvas() {
       rows = Math.ceil(h / CELL);
       cells = Array.from({ length: cols * rows }, () => ({
         char: randomChar(),
-        opacity: Math.random() * 0.4 + 0.05,
-        target: Math.random() * 0.4 + 0.05,
+        opacity: Math.random() * 0.55 + 0.1,
+        target: Math.random() * 0.55 + 0.1,
         timer: Math.floor(Math.random() * 120),
       }));
     }
@@ -83,7 +83,7 @@ export function HeroCanvas() {
 
         cell.timer--;
         if (cell.timer <= 0) {
-          cell.target = Math.random() * 0.4 + 0.05;
+          cell.target = Math.random() * 0.55 + 0.1;
           cell.timer = 30 + Math.floor(Math.random() * 100);
           if (Math.random() > 0.72) cell.char = randomChar();
         }
@@ -132,8 +132,8 @@ export function HeroCanvas() {
           left: 0,
           width: "52%",
           height: "100%",
-          backdropFilter: "blur(6px)",
-          WebkitBackdropFilter: "blur(6px)",
+          backdropFilter: "none",
+          WebkitBackdropFilter: "none",
           WebkitMaskImage: "linear-gradient(to right, black 0%, transparent 100%)",
           maskImage: "linear-gradient(to right, black 0%, transparent 100%)",
           pointerEvents: "none",
@@ -147,7 +147,7 @@ export function HeroCanvas() {
           inset: 0,
           pointerEvents: "none",
           background: [
-            "linear-gradient(to right, var(--bg) 0%, transparent 32%)",
+            "linear-gradient(to right, var(--bg) 0%, transparent 8%)",
             "linear-gradient(to left, var(--bg) 0%, transparent 10%)",
             "linear-gradient(to bottom, var(--bg) 0%, transparent 10%)",
             "linear-gradient(to top, var(--bg) 0%, transparent 10%)",

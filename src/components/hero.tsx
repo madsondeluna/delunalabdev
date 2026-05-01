@@ -1,14 +1,66 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { HeroCanvas } from "./hero-canvas";
 
-export function Hero() {
+function GlassButton() {
+  const handleClick = () => {
+    window.dispatchEvent(new CustomEvent("pop-cards"));
+  };
+
+  return (
+    <button className="btn-glass" onClick={handleClick}>
+      explore the applications <span>&#8594;</span>
+    </button>
+  );
+}
+
+const cyclingWords = [
+  "building tools",
+  "testing hypotheses",
+  "designing systems",
+  "exploring ai",
+  "automating workflows",
+  "training models",
+  "shipping software",
+  "prototyping ideas",
+  "writing algorithms",
+  "solving hard problems",
+];
+
+const cyclingSuffixes = [".dev", ".sh", ".io", ".ai", ".md", ".py", ".txt", ".env", ".yml"];
+
+export function HeroContent() {
   const [mounted, setMounted] = useState(false);
+  const [wordIndex, setWordIndex] = useState(0);
+  const [visible, setVisible] = useState(true);
+  const [suffixIndex, setSuffixIndex] = useState(0);
+  const [suffixVisible, setSuffixVisible] = useState(true);
 
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 100);
     return () => clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setVisible(false);
+      setTimeout(() => {
+        setWordIndex((i) => (i + 1) % cyclingWords.length);
+        setVisible(true);
+      }, 400);
+    }, 2800);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSuffixVisible(false);
+      setTimeout(() => {
+        setSuffixIndex((i) => (i + 1) % cyclingSuffixes.length);
+        setSuffixVisible(true);
+      }, 400);
+    }, 3600);
+    return () => clearInterval(interval);
   }, []);
 
   const fade = (delay: number): React.CSSProperties => ({
@@ -18,136 +70,100 @@ export function Hero() {
   });
 
   return (
-    <section
-      className="section-pad"
-      style={{
-        minHeight: "100svh",
-        padding: 0,
-        position: "relative",
-        overflow: "hidden",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-      }}
-    >
+    <div style={{ position: "relative" }}>
       <div
-        className="hero-canvas-wrap"
         style={{
           position: "absolute",
-          top: 0,
-          right: 0,
-          bottom: 0,
-          width: "70%",
-          zIndex: 0,
+          inset: "-18rem -20rem",
+          backdropFilter: "blur(5px)",
+          WebkitBackdropFilter: "blur(5px)",
+          WebkitMaskImage: "radial-gradient(ellipse at 40% 50%, black 0%, black 45%, transparent 100%)",
+          maskImage: "radial-gradient(ellipse at 40% 50%, black 0%, black 45%, transparent 100%)",
+          zIndex: -1,
+          pointerEvents: "none",
         }}
-      >
-        <HeroCanvas />
-      </div>
-
-      {/* conteúdo — layout original */}
-      <div
+      />
+      <p
         style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-          padding: "120px 2.5rem 80px",
-          width: "100%",
-          position: "relative",
-          zIndex: 1,
+          ...fade(0),
+          fontFamily: "var(--font-mono)",
+          fontSize: "0.625rem",
+          color: "var(--muted)",
+          letterSpacing: "0.18em",
+          marginBottom: "2rem",
         }}
       >
-        <div style={{ maxWidth: "620px" }}>
-          <p
-            style={{
-              ...fade(0),
-              fontFamily: "var(--font-mono)",
-              fontSize: "0.6875rem",
-              color: "var(--muted)",
-              letterSpacing: "0.14em",
-              marginBottom: "2.5rem",
-            }}
-          >
-            madson de luna / lab of solutions development
-          </p>
+        madson de luna / virtual development lab
+      </p>
 
-          <h1
-            style={{
-              ...fade(80),
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(4rem, 10vw, 8.5rem)",
-              fontWeight: 300,
-              lineHeight: 0.92,
-              letterSpacing: "-0.03em",
-              color: "var(--text)",
-              marginBottom: "3rem",
-            }}
-          >
-            delunalab
-          </h1>
-
-          <p
-            style={{
-              ...fade(160),
-              fontSize: "clamp(1rem, 1.5vw, 1.2rem)",
-              color: "var(--muted)",
-              lineHeight: 1.7,
-              maxWidth: "520px",
-              marginBottom: "3.5rem",
-            }}
-          >
-            a virtual lab for building, teaching, and exploring software
-            solutions. courses, applications, videos, and opinions on
-            development and bioinformatics.
-          </p>
-
-          <div
-            style={{
-              ...fade(240),
-              display: "flex",
-              gap: "2.5rem",
-              alignItems: "center",
-            }}
-          >
-            <a href="#courses" className="link-cta">
-              explore work <span style={{ fontSize: "0.75rem" }}>&#8594;</span>
-            </a>
-
-          </div>
-        </div>
-      </div>
-
-      {/* scroll indicator — posição original */}
-      <div
+      <h1
         style={{
-          ...fade(400),
-          position: "absolute",
-          bottom: "2.5rem",
-          right: "2.5rem",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "0.5rem",
-          zIndex: 1,
+          ...fade(80),
+          fontFamily: "var(--font-display)",
+          fontSize: "clamp(3.5rem, 7vw, 7rem)",
+          fontWeight: 300,
+          lineHeight: 0.92,
+          letterSpacing: "-0.03em",
+          color: "var(--text)",
+          marginBottom: "2.25rem",
+          whiteSpace: "nowrap",
         }}
       >
+        delunalab
         <span
           style={{
             fontFamily: "var(--font-mono)",
-            fontSize: "0.6875rem",
+            fontSize: "clamp(1.25rem, 2vw, 2rem)",
+            fontWeight: 300,
             color: "var(--muted)",
-            letterSpacing: "0.08em",
-            writingMode: "vertical-rl",
+            letterSpacing: "0.02em",
+            display: "inline-block",
+            minWidth: "2.8rem",
+            transition: "opacity 0.4s ease, filter 0.4s ease",
+            opacity: suffixVisible ? 1 : 0,
+            filter: suffixVisible ? "blur(0px)" : "blur(8px)",
           }}
         >
-          scroll
+          {cyclingSuffixes[suffixIndex]}
         </span>
-        <div
+      </h1>
+
+
+      <p
+        style={{
+          ...fade(160),
+          fontSize: "0.875rem",
+          color: "var(--muted)",
+          lineHeight: 1.8,
+          maxWidth: "380px",
+          marginBottom: "2.25rem",
+          textAlign: "justify",
+        }}
+      >
+        a virtual lab dedicated to{" "}
+        <span
           style={{
-            width: "1px",
-            height: "48px",
-            background: "linear-gradient(to bottom, var(--muted), transparent)",
+            display: "inline-block",
+            minWidth: "10rem",
+            textAlign: "center",
+            color: "var(--muted)",
+            fontWeight: 300,
+            transition: "opacity 0.4s ease, filter 0.4s ease",
+            opacity: visible ? 1 : 0,
+            filter: visible ? "blur(0px)" : "blur(8px)",
           }}
-        />
+        >
+          {cyclingWords[wordIndex]}
+        </span>
+        each project here is an experiment at the boundary of artificial
+        intelligence, autonomous systems, bioinformatics, and
+        production software.
+      </p>
+
+      <div style={{ ...fade(240) }}>
+        <GlassButton />
       </div>
-    </section>
+    </div>
   );
+
 }

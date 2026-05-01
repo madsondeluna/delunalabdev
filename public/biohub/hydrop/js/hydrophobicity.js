@@ -1,0 +1,96 @@
+document.addEventListener('DOMContentLoaded', () => {
+    // --- CONSTANTES E ELEMENTOS DO DOM ---
+    const kyteDoolittle = { 'A': 1.8, 'R': -4.5, 'N': -3.5, 'D': -3.5, 'C': 2.5, 'E': -3.5, 'Q': -3.5, 'G': -0.4, 'H': -3.2, 'I': 4.5, 'L': 3.8, 'K': -3.9, 'M': 1.9, 'F': 2.8, 'P': -1.6, 'S': -0.8, 'T': -0.7, 'W': -0.9, 'Y': -1.3, 'V': 4.2 };
+    
+    const fastaInput = document.getElementById('fasta-input');
+    const calculateBtn = document.getElementById('calculate-btn');
+    const clearBtn = document.getElementById('clear-btn');
+    const plotDiv = document.getElementById('hydrophobicity-plot');
+    // As linhas abaixo, que selecionavam o slider, foram removidas:
+    // const windowSizeSlider = document.getElementById('window-size-slider');
+    // const windowSizeValue = document.getElementById('window-size-value');
+
+    // --- FUNÇÕES ---
+    function parseSequence(fasta) {
+        if (!fasta) return '';
+        return fasta.replace(/^>.*$/m, '').replace(/\s/g, '').toUpperCase();
+    }
+
+    function calculateHydrophobicity(sequence, windowSize) {
+        const scores = [];
+        const positions = [];
+        const halfWindow = Math.floor(windowSize / 2);
+
+        for (let i = halfWindow; i < sequence.length - halfWindow; i++) {
+            const windowSeq = sequence.substring(i - halfWindow, i + halfWindow + 1);
+            let windowScore = 0;
+            for (const aa of windowSeq) {
+                windowScore += kyteDoolittle[aa] || 0;
+            }
+            scores.push(windowScore / windowSize);
+            positions.push(i + 1);
+        }
+        return { positions, scores };
+    }
+
+    function plotHydrophobicity(positions, scores) {
+        const data = [{
+            x: positions,
+            y: scores,
+            type: 'scatter',
+            mode: 'lines',
+            line: {
+                color: 'var(--color-primary)',
+                width: 2
+            }
+        }];
+
+        const layout = {
+            title: 'Hydrophobicity Profile (Window Size: 9)',
+            paper_bgcolor: '#ffffff',
+            plot_bgcolor: '#ffffff',
+            font: { 
+                color: '#333333'
+            },
+            xaxis: {
+                title: 'Residue Number',
+                gridcolor: '#e0e0e0'
+            },
+            yaxis: {
+                title: 'Hydrophobicity Index',
+                zerolinecolor: 'var(--color-danger)',
+                gridcolor: '#e0e0e0'
+            },
+            hovermode: 'x unified',
+            margin: { l: 60, r: 30, b: 50, t: 50 }
+        };
+        
+        const config = { 
+            responsive: true,
+            displayModeBar: false
+        };
+        Plotly.newPlot(plotDiv, data, layout, config);
+    }
+
+    // --- EVENT LISTENERS ---
+    // O event listener para o slider foi removido.
+
+    calculateBtn.addEventListener('click', () => {
+        const sequence = parseSequence(fastaInput.value);
+        
+        // *** MUDANÇA PRINCIPAL AQUI ***
+        const windowSize = 9; // O valor agora é fixo em 9.
+
+        if (sequence && sequence.length >= windowSize) {
+            const { positions, scores } = calculateHydrophobicity(sequence, windowSize);
+            plotHydrophobicity(positions, scores);
+        } else {
+            Plotly.purge(plotDiv); 
+        }
+    });
+    
+    clearBtn.addEventListener('click', () => {
+        fastaInput.value = '';
+        Plotly.purge(plotDiv);
+    });
+});

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>try{var t=localStorage.getItem("theme");if(t==="dark")document.documentElement.classList.add("dark-mode");else if(t==="light")document.documentElement.classList.add("light-mode")}catch(e){}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ContactMap</title>
+    
+    
+    
+    
+    <link rel="stylesheet" href="../_shared.css">
+    
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Protein Contact Map Generator</h1>
+            <p id="typing-text">visualize residue contact maps and structural data from pdb files</p>
+            <nav>
+                <a href="/biohub" class="nav-link">← Back to BioHub</a>
+            </nav>
+        </header>
+
+        <main>
+            <div class="io-box upload-section">
+                <h2>Upload PDB File</h2>
+                <p class="description">Select a PDB file to calculate its contact map and view structural information.</p>
+                <label for="pdb-upload" class="upload-btn">Select .pdb File</label>
+                <input type="file" id="pdb-upload" accept=".pdb" hidden>
+                
+                <div id="progress-container" class="hidden">
+                    <div id="progress-text">Processing... 0%</div>
+                    <div class="progress-bar-background">
+                        <div id="progress-bar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="results-section" class="hidden">
+                <div class="pdb-info-container"></div>
+                <div class="plot-container">
+                    <div id="heatmap-plot"></div>
+                </div>
+            </div>
+        </main>
+        
+    </div>
+
+    <script src="js/contactmap.js"></script>
+    <footer>
+        <span>&copy; 2026 gromads</span>
+        <div class="footer-links">
+            <a href="https://madsondeluna.com">portfolio</a>
+            <a href="https://github.com/madsondeluna">github</a>
+            <a href="https://x.com/madsondeluna">twitter</a>
+            <a href="https://www.linkedin.com/in/madsonaragao/">linkedin</a>
+            <a href="mailto:madsondeluna@gmail.com">mail</a>
+        </div>
+    </footer>
+</body>
+</html>

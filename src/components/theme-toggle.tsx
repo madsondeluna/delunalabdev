@@ -37,6 +37,7 @@ export function ThemeToggle() {
         padding: "2px",
         display: "flex",
         alignItems: "center",
+        gap: "0.4rem",
         transition: "color 0.2s ease",
       }}
     >
@@ -57,6 +58,17 @@ export function ThemeToggle() {
           style={{ transition: "fill 0.25s ease, stroke 0.2s ease" }}
         />
       </svg>
+      <span
+        style={{
+          fontFamily: "var(--font-mono)",
+          fontSize: "0.625rem",
+          letterSpacing: "0.08em",
+          color,
+          transition: "color 0.2s ease",
+        }}
+      >
+        {dark ? "dark" : "light"}
+      </span>
     </button>
   );
 }

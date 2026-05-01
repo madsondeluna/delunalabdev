@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>try{var t=localStorage.getItem("theme");if(t==="dark")document.documentElement.classList.add("dark-mode");else if(t==="light")document.documentElement.classList.add("light-mode")}catch(e){}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDB2FASTA</title>
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="../_shared.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>PDB to FASTA Converter</h1>
+            <p id="typing-text">paste or upload a pdb file to extract fasta sequences</p>
+            <nav>
+                <a href="/biohub" class="nav-link">← Back to BioHub</a>
+            </nav>
+        </header>
+
+        <main>
+            <div class="converter-grid">
+                <div class="io-box">
+                    <h2>PDB Input</h2>
+                    <label for="pdb-upload" class="upload-btn">Upload PDB File</label>
+                    <input type="file" id="pdb-upload" accept=".pdb" hidden>
+                    <textarea id="pdb-input" rows="15" placeholder="Or paste PDB content here..."></textarea>
+                </div>
+
+                <div class="io-box">
+                    <h2>FASTA Output</h2>
+                    <div class="output-controls">
+                        <button id="copy-btn">Copy to Clipboard</button>
+                    </div>
+                    <textarea id="fasta-output" rows="15" readonly placeholder="FASTA formatted output will appear here..."></textarea>
+                </div>
+
+                <button id="convert-btn">Convert</button>
+                <button id="clear-btn">Clear</button>
+                
+            </div> 
+        </main>
+    </div>
+
+    <script src="js/converter.js"></script>
+    <footer>
+        <span>&copy; 2026 gromads</span>
+        <div class="footer-links">
+            <a href="https://madsondeluna.com">portfolio</a>
+            <a href="https://github.com/madsondeluna">github</a>
+            <a href="https://x.com/madsondeluna">twitter</a>
+            <a href="https://www.linkedin.com/in/madsonaragao/">linkedin</a>
+            <a href="mailto:madsondeluna@gmail.com">mail</a>
+        </div>
+    </footer>
+</body>
+</html>
