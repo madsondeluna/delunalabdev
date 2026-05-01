@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ThemeToggle } from "./theme-toggle";
 
 const links = [
+  { label: "home", href: "#" },
   { label: "courses", href: "#courses" },
   { label: "apps", href: "#apps" },
   { label: "videos", href: "#videos" },
@@ -69,21 +70,9 @@ export function Nav() {
           padding: "0 2.5rem",
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
+          justifyContent: "flex-end",
         }}
       >
-        <a
-          href="#"
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "0.8125rem",
-            color: "var(--text)",
-            letterSpacing: "0.04em",
-          }}
-        >
-          delunalab
-        </a>
-
         <nav
           className="nav-desktop"
           style={{ display: "flex", gap: "2rem", alignItems: "center" }}

@@ -110,9 +110,7 @@ export function Hero() {
             <a href="#courses" className="link-cta">
               explore work <span style={{ fontSize: "0.75rem" }}>&#8594;</span>
             </a>
-            <a href="#footer" className="link-secondary">
-              contact
-            </a>
+
           </div>
         </div>
       </div>
