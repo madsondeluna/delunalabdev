@@ -34,7 +34,7 @@ export const apps: App[] = [
     id: 3,
     title: "decryptamp",
     description:
-      "structural and physicochemical analysis of antimicrobial peptides for activity prediction and annotation.",
+      "computational pipeline to mine proteomes for encrypted antimicrobial peptides that exist latently within larger protein sequences.",
     url: "#",
     tags: ["python", "scikit-learn", "bash", "docker"],
     status: "development",
@@ -44,9 +44,9 @@ export const apps: App[] = [
     id: 4,
     title: "ampcraft",
     description:
-      "interactive design tool for generating and evaluating synthetic antimicrobial peptide candidates.",
+      "AI-guided AMP discovery pipeline with ESM-2 classifiers, sequence generation, and ESMFold structure prediction.",
     url: "#",
-    tags: ["python", "scikit-learn", "bash", "docker"],
+    tags: ["python", "tensorflow", "bash", "docker"],
     status: "development",
     type: ["cli"],
   },
@@ -54,7 +54,7 @@ export const apps: App[] = [
     id: 5,
     title: "bilbo",
     description:
-      "automated bioinformatics pipeline builder for sequence alignment, variant calling, and annotation workflows.",
+      "builds flat lipid bilayer membranes from all-atom PDB templates and places proteins or peptides on or inside them for MD preparation.",
     url: "https://bilbo-r1el.onrender.com/",
     tags: ["python", "bash", "docker"],
     status: "beta",
@@ -66,7 +66,7 @@ export const apps: App[] = [
     description:
       "all public repositories, scripts, and tools developed for bioinformatics research and software projects.",
     url: "https://github.com/madsondeluna",
-    tags: ["python", "r", "bash", "nextflow", "typescript", "docker"],
+    tags: ["python", "r", "bash", "nextflow", "typescript", "tensorflow", "docker"],
     status: "portfolio",
     type: ["cli", "api", "web"],
   },
