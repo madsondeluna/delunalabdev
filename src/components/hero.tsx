@@ -91,9 +91,10 @@ export function HeroContent() {
           color: "var(--muted)",
           letterSpacing: "0.18em",
           marginBottom: "2rem",
+          whiteSpace: "nowrap",
         }}
       >
-        madson de luna / virtual development lab
+        madson a. de luna-aragão / virtual development lab
       </p>
 
       <h1

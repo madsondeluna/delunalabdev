@@ -35,7 +35,7 @@ export default function Page() {
           style={{
             flex: 1,
             width: "100%",
-            padding: "88px 3rem 0 3rem",
+            padding: "56px 3rem 0 3rem",
             position: "relative",
             zIndex: 1,
             display: "flex",

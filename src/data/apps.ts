@@ -5,7 +5,7 @@ export interface App {
   url: string;
   githubUrl?: string;
   tags: string[];
-  status: "live" | "beta" | "development";
+  status: "live" | "beta" | "development" | "portfolio";
   type: string[];
 }
 
@@ -25,7 +25,7 @@ export const apps: App[] = [
     title: "ampidentifier",
     description:
       "machine learning classifier for antimicrobial peptide identification from amino acid sequences.",
-    url: "#",
+    url: "https://ampidentifierserver.onrender.com/",
     tags: ["python", "scikit-learn", "bash", "html", "javascript", "css", "docker"],
     status: "live",
     type: ["cli", "web", "pip"],
@@ -37,7 +37,7 @@ export const apps: App[] = [
       "structural and physicochemical analysis of antimicrobial peptides for activity prediction and annotation.",
     url: "#",
     tags: ["python", "scikit-learn", "bash", "docker"],
-    status: "beta",
+    status: "development",
     type: ["cli", "pip"],
   },
   {
@@ -55,10 +55,20 @@ export const apps: App[] = [
     title: "bilbo",
     description:
       "automated bioinformatics pipeline builder for sequence alignment, variant calling, and annotation workflows.",
-    url: "#",
+    url: "https://bilbo-r1el.onrender.com/",
     tags: ["python", "bash", "docker"],
     status: "beta",
     type: ["cli", "web"],
+  },
+  {
+    id: 6,
+    title: "more projects on github",
+    description:
+      "all public repositories, scripts, and tools developed for bioinformatics research and software projects.",
+    url: "https://github.com/madsondeluna",
+    tags: ["python", "r", "bash", "nextflow", "typescript", "docker"],
+    status: "portfolio",
+    type: ["cli", "api", "web"],
   },
 ];
 
@@ -66,6 +76,7 @@ export const statusStyle: Record<App["status"], { color: string; bg: string; bor
   live:        { color: "#16a34a", bg: "rgba(34,197,94,0.12)",   border: "rgba(34,197,94,0.35)",   label: "launched" },
   beta:        { color: "#d97706", bg: "rgba(245,158,11,0.12)",  border: "rgba(245,158,11,0.35)",  label: "beta testing" },
   development: { color: "#2563eb", bg: "rgba(59,130,246,0.12)",  border: "rgba(59,130,246,0.35)",  label: "under development" },
+  portfolio:   { color: "#6b7280", bg: "rgba(107,114,128,0.1)",  border: "rgba(107,114,128,0.3)",  label: "portfolio" },
 };
 
 export const typeStyle: Record<string, { color: string; bg: string }> = {
