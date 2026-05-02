@@ -1,1 +1,1 @@
-try{if(localStorage.getItem('theme')==='light')document.documentElement.classList.remove('dark')}catch(e){}
+try{if(localStorage.getItem('theme')==='dark')document.documentElement.classList.add('dark')}catch(e){}

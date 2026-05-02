@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 export function ThemeToggle() {
-  const [dark, setDark] = useState(true);
+  const [dark, setDark] = useState(false);
   const [hovered, setHovered] = useState(false);
 
   useEffect(() => {

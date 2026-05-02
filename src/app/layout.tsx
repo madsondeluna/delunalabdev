@@ -35,7 +35,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${cormorant.variable} dark`}
+      className={`${geistSans.variable} ${geistMono.variable} ${cormorant.variable}`}
       suppressHydrationWarning
     >
       <body>
