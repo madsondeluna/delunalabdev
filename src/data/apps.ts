@@ -25,7 +25,7 @@ export const apps: App[] = [
     title: "ampidentifier",
     description:
       "machine learning classifier for antimicrobial peptide identification from amino acid sequences.",
-    url: "https://ampidentifierserver.onrender.com/",
+    url: "https://www.ampidentifier.com/",
     tags: ["python", "scikit-learn", "bash", "html", "javascript", "css", "docker"],
     status: "live",
     type: ["cli", "web", "pip"],
@@ -55,7 +55,7 @@ export const apps: App[] = [
     title: "bilbo",
     description:
       "builds flat lipid bilayer membranes from all-atom PDB templates and places proteins or peptides on or inside them for MD preparation.",
-    url: "https://bilbo-r1el.onrender.com/",
+    url: "https://bilbo.delunalab.dev/",
     tags: ["python", "bash", "docker"],
     status: "beta",
     type: ["cli", "web"],
