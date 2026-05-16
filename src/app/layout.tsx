@@ -19,9 +19,48 @@ const cormorant = Cormorant_Garamond({
   weight: ["300", "400", "500"],
 });
 
+const BASE_URL = "https://delunalab.dev";
+
 export const metadata: Metadata = {
-  title: "deluna lab",
-  description: "lab of solutions development",
+  metadataBase: new URL(BASE_URL),
+  title: {
+    default: "delunalab",
+    template: "%s — delunalab",
+  },
+  description:
+    "Madson de Luna's lab: bioinformatics tools, data apps, and science software for researchers.",
+  keywords: [
+    "bioinformatics",
+    "data science",
+    "research software",
+    "science tools",
+    "delunalab",
+    "Madson de Luna",
+  ],
+  authors: [{ name: "Madson de Luna", url: BASE_URL }],
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: BASE_URL,
+    siteName: "delunalab",
+    title: "delunalab",
+    description:
+      "Bioinformatics tools, data apps, and science software for researchers.",
+  },
+  twitter: {
+    card: "summary",
+    title: "delunalab",
+    description:
+      "Bioinformatics tools, data apps, and science software for researchers.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
+  alternates: {
+    canonical: BASE_URL,
+  },
 };
 
 export const viewport: Viewport = {

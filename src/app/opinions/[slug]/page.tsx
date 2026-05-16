@@ -1,14 +1,39 @@
+import type { Metadata } from "next";
 import { opinions } from "@/data/opinions";
 import { notFound } from "next/navigation";
+
+const BASE_URL = "https://delunalab.dev";
 
 export function generateStaticParams() {
   return opinions.map((o) => ({ slug: o.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }) {
+export function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Metadata {
   const post = opinions.find((o) => o.slug === params.slug);
   if (!post) return {};
-  return { title: `${post.title} — delunalab` };
+  const url = `${BASE_URL}/opinions/${post.slug}/`;
+  return {
+    title: post.title,
+    description: post.excerpt,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "article",
+      url,
+      title: post.title,
+      description: post.excerpt,
+      publishedTime: post.date,
+      authors: ["Madson de Luna"],
+    },
+    twitter: {
+      card: "summary",
+      title: post.title,
+      description: post.excerpt,
+    },
+  };
 }
 
 export default function OpinionPage({ params }: { params: { slug: string } }) {
