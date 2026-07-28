@@ -60,9 +60,9 @@ export default function BiohubPage() {
     <>
       <Nav />
       <div
+        className="biohub-page"
         style={{
           minHeight: "100svh",
-          padding: "64px 3rem 4rem",
           display: "flex",
           flexDirection: "column",
         }}
@@ -86,6 +86,7 @@ export default function BiohubPage() {
               </p>
 
               <h1
+                className="hero-nowrap"
                 style={{
                   fontFamily: "var(--font-display)",
                   fontSize: "clamp(2.5rem, 5vw, 5rem)",
@@ -94,7 +95,6 @@ export default function BiohubPage() {
                   letterSpacing: "-0.03em",
                   color: "var(--text)",
                   margin: 0,
-                  whiteSpace: "nowrap",
                 }}
               >
                 biohub
@@ -116,9 +116,8 @@ export default function BiohubPage() {
         </FadeIn>
 
         <div
+          className="biohub-grid"
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
             gap: "1px",
             background: "var(--border)",
             marginTop: "2rem",

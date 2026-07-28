@@ -1,15 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useReducedMotion } from "./use-reduced-motion";
 
 function GlassButton() {
   const handleClick = () => {
     window.dispatchEvent(new CustomEvent("pop-cards"));
+    // only on the stacked layout: on desktop the grid sits inside an
+    // overflow:hidden section with no scrollbar to get back
+    if (window.matchMedia("(max-width: 900px)").matches) {
+      document.getElementById("apps")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
   return (
     <button className="btn-glass" onClick={handleClick}>
-      explore the applications <span>&#8594;</span>
+      explore the applications <span aria-hidden="true">&#8594;</span>
     </button>
   );
 }
@@ -30,6 +36,7 @@ const cyclingWords = [
 const cyclingSuffixes = [".dev", ".sh", ".io", ".ai", ".md", ".py", ".txt", ".env", ".yml"];
 
 export function HeroContent() {
+  const reducedMotion = useReducedMotion();
   const [mounted, setMounted] = useState(false);
   const [wordIndex, setWordIndex] = useState(0);
   const [visible, setVisible] = useState(true);
@@ -42,6 +49,7 @@ export function HeroContent() {
   }, []);
 
   useEffect(() => {
+    if (reducedMotion) return;
     const interval = setInterval(() => {
       setVisible(false);
       setTimeout(() => {
@@ -50,9 +58,10 @@ export function HeroContent() {
       }, 400);
     }, 2800);
     return () => clearInterval(interval);
-  }, []);
+  }, [reducedMotion]);
 
   useEffect(() => {
+    if (reducedMotion) return;
     const interval = setInterval(() => {
       setSuffixVisible(false);
       setTimeout(() => {
@@ -61,7 +70,7 @@ export function HeroContent() {
       }, 400);
     }, 3600);
     return () => clearInterval(interval);
-  }, []);
+  }, [reducedMotion]);
 
   const fade = (delay: number): React.CSSProperties => ({
     transition: `opacity 1s cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform 1s cubic-bezier(0.16,1,0.3,1) ${delay}ms`,
@@ -72,6 +81,8 @@ export function HeroContent() {
   return (
     <div style={{ position: "relative" }}>
       <div
+        className="hero-blur"
+        aria-hidden="true"
         style={{
           position: "absolute",
           inset: "-18rem -20rem",
@@ -84,6 +95,7 @@ export function HeroContent() {
         }}
       />
       <p
+        className="hero-nowrap"
         style={{
           ...fade(0),
           fontFamily: "var(--font-mono)",
@@ -91,13 +103,13 @@ export function HeroContent() {
           color: "var(--muted)",
           letterSpacing: "0.18em",
           marginBottom: "2rem",
-          whiteSpace: "nowrap",
         }}
       >
         madson a. de luna-aragão / virtual development lab
       </p>
 
       <h1
+        className="hero-nowrap"
         style={{
           ...fade(80),
           fontFamily: "var(--font-display)",
@@ -107,7 +119,6 @@ export function HeroContent() {
           letterSpacing: "-0.03em",
           color: "var(--text)",
           marginBottom: "2.25rem",
-          whiteSpace: "nowrap",
         }}
       >
         delunalab
@@ -129,16 +140,14 @@ export function HeroContent() {
         </span>
       </h1>
 
-
       <p
+        className="hero-body"
         style={{
           ...fade(160),
           fontSize: "0.875rem",
           color: "var(--muted)",
           lineHeight: 1.8,
-          maxWidth: "380px",
           marginBottom: "2.25rem",
-          textAlign: "justify",
         }}
       >
         a virtual lab dedicated to{" "}
@@ -166,5 +175,4 @@ export function HeroContent() {
       </div>
     </div>
   );
-
 }

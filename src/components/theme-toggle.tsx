@@ -30,6 +30,8 @@ export function ThemeToggle() {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       title={dark ? "switch to light" : "switch to dark"}
+      aria-label={dark ? "switch to light theme" : "switch to dark theme"}
+      aria-pressed={dark}
       style={{
         background: "none",
         border: "none",

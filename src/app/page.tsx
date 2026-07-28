@@ -4,72 +4,28 @@ import { HeroContent } from "@/components/hero";
 import { AppsGrid } from "@/components/apps";
 
 export default function Page() {
+  // static export: evaluated at build time
   const year = new Date().getFullYear();
 
   return (
     <>
       <Nav />
-      <section
-        style={{
-          height: "100svh",
-          overflow: "hidden",
-          position: "relative",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 0,
-          }}
-        >
+      <section className="hero-section">
+        <div className="hero-canvas-wrap" aria-hidden="true">
           <HeroCanvas />
         </div>
 
-        <div
-          style={{
-            flex: 1,
-            width: "100%",
-            padding: "56px 3rem 0 3rem",
-            position: "relative",
-            zIndex: 1,
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <div style={{ flex: "0 0 360px", maxWidth: "360px", position: "relative", zIndex: 2 }}>
+        <div className="hero-layout">
+          <div className="hero-text">
             <HeroContent />
           </div>
 
-          <div style={{ flex: "0 0 50%", maxWidth: "50%" }}>
+          <div className="hero-apps">
             <AppsGrid />
           </div>
         </div>
 
-        <footer
-          style={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: "30%",
-            zIndex: 2,
-            background: "linear-gradient(to top, var(--bg) 30%, transparent 100%)",
-            pointerEvents: "none",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "flex-end",
-            padding: "0 3rem 1.25rem",
-            gap: "0.5rem",
-          }}
-        >
+        <footer className="hero-footer">
           <span
             style={{
               fontFamily: "var(--font-mono)",
@@ -80,7 +36,15 @@ export default function Page() {
             &copy; {year} gromads
           </span>
 
-          <div style={{ display: "flex", gap: "1.5rem", pointerEvents: "auto" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: "1.5rem",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              pointerEvents: "auto",
+            }}
+          >
             {[
               { label: "portfolio", url: "https://madsondeluna.com" },
               { label: "github", url: "https://github.com/madsondeluna" },

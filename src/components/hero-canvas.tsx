@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useReducedMotion } from "./use-reduced-motion";
 
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$%@&*!?[]{}|;:<>+-=~^/\\";
 const CELL = 18;
@@ -27,6 +28,7 @@ export function HeroCanvas() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const mouse = useRef({ x: -9999, y: -9999 });
   const raf = useRef(0);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -81,13 +83,15 @@ export function HeroCanvas() {
         const dist = Math.sqrt(dx * dx + dy * dy);
         const boost = dist < 150 ? (1 - dist / 150) * 0.6 : 0;
 
-        cell.timer--;
-        if (cell.timer <= 0) {
-          cell.target = Math.random() * 0.55 + 0.1;
-          cell.timer = 30 + Math.floor(Math.random() * 100);
-          if (Math.random() > 0.72) cell.char = randomChar();
+        if (!reducedMotion) {
+          cell.timer--;
+          if (cell.timer <= 0) {
+            cell.target = Math.random() * 0.55 + 0.1;
+            cell.timer = 30 + Math.floor(Math.random() * 100);
+            if (Math.random() > 0.72) cell.char = randomChar();
+          }
+          cell.opacity += (cell.target - cell.opacity) * 0.04;
         }
-        cell.opacity += (cell.target - cell.opacity) * 0.04;
 
         const alpha = Math.min(1, cell.opacity + boost);
         if (alpha < 0.01) continue;
@@ -95,7 +99,7 @@ export function HeroCanvas() {
         ctx.fillText(cell.char, x, y);
       }
 
-      raf.current = requestAnimationFrame(draw);
+      if (!reducedMotion) raf.current = requestAnimationFrame(draw);
     }
 
     const onMouse = (e: MouseEvent) => {
@@ -103,19 +107,32 @@ export function HeroCanvas() {
       mouse.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
     };
 
-    const obs = new ResizeObserver(init);
+    const obs = new ResizeObserver(() => {
+      init();
+      if (reducedMotion) draw();
+    });
     obs.observe(wrapper);
     init();
     draw();
 
-    document.addEventListener("mousemove", onMouse);
+    if (!reducedMotion) document.addEventListener("mousemove", onMouse);
+
+    // in reduced-motion mode nothing repaints, so redraw when the theme flips
+    const themeObs = new MutationObserver(() => {
+      if (reducedMotion) draw();
+    });
+    themeObs.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
 
     return () => {
       cancelAnimationFrame(raf.current);
       obs.disconnect();
+      themeObs.disconnect();
       document.removeEventListener("mousemove", onMouse);
     };
-  }, []);
+  }, [reducedMotion]);
 
   return (
     <div

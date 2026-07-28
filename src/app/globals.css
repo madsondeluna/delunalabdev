@@ -166,16 +166,187 @@ a {
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-@media (max-width: 768px) {
-  .nav-desktop {
-    display: none !important;
+/* hero layout — desktop */
+.hero-section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  /* min-height, not height: on short viewports a fixed 100svh box clipped the
+     second card row, and a fully clipped card never fires its IntersectionObserver,
+     so it stayed at opacity 0. overflow:hidden still clips the absolutely
+     positioned blur layer, which does not contribute to the box height. */
+  min-height: 100svh;
+  overflow: hidden;
+}
+
+.hero-canvas-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-layout {
+  flex: 1;
+  width: 100%;
+  padding: 56px 3rem 0;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hero-text {
+  flex: 0 0 360px;
+  max-width: 360px;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-apps {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+/* kept in CSS, not inline, so the mobile media query can override them */
+.hero-nowrap {
+  white-space: nowrap;
+}
+
+.hero-body {
+  max-width: 380px;
+  text-align: justify;
+}
+
+.hero-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30%;
+  z-index: 2;
+  background: linear-gradient(to top, var(--bg) 30%, transparent 100%);
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 3rem 1.25rem;
+  gap: 0.5rem;
+}
+
+.apps-grid {
+  display: grid;
+  /* minmax(0, 1fr) instead of 1fr: without it the cards' min-content width
+     forces uneven columns that overflow the container */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--border);
+}
+
+.app-card {
+  background: var(--surface);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  height: 100%;
+  color: inherit;
+}
+
+/* under 1200px a 3-up grid inside the 50% column leaves ~100px of card content,
+   narrower than the widest status badge */
+@media (max-width: 1200px) {
+  .apps-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .nav-mobile-controls {
-    display: flex !important;
+}
+
+.biohub-page {
+  padding: 64px 3rem 4rem;
+}
+
+.biohub-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 1100px) {
+  .biohub-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .biohub-page {
+    padding: 80px 1.25rem 3rem;
+  }
+  .biohub-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* below 900px the 360px + 50% split no longer fits: stack and let the page scroll */
+@media (max-width: 900px) {
+  .hero-section {
+    height: auto;
+    min-height: 100svh;
+    overflow: visible;
   }
   .hero-canvas-wrap {
-    display: none !important;
+    display: none;
   }
+  .hero-blur {
+    display: none;
+  }
+  .hero-layout {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 96px 1.25rem 0;
+    gap: 3rem;
+  }
+  .hero-text,
+  .hero-apps {
+    flex: 0 1 auto;
+    max-width: 100%;
+  }
+  .hero-nowrap {
+    white-space: normal;
+  }
+  .hero-body {
+    text-align: left;
+    max-width: 100%;
+  }
+  .hero-footer {
+    position: static;
+    height: auto;
+    background: none;
+    padding: 3rem 1.25rem 2rem;
+  }
+  .apps-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--border-hover);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 768px) {
   .section-pad {
     padding: 64px 0 !important;
   }
