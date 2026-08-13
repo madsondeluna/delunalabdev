@@ -1,169 +1,46 @@
 @import "tailwindcss";
+@import "./pure/tokens.css";
+@import "./pure/patterns.css";
 
-:root {
-  --bg: #f4f6f9;
-  --surface: #ebeef3;
-  --surface-hover: #e1e5ec;
-  --border: #ced3dc;
-  --border-hover: #748cab;
-  --text: #0d1321;
-  --muted: #3e5c76;
-  --dim: #dde1e9;
-  --accent: #3e5c76;
-  --secondary: #748cab;
-}
-
-:root.dark {
-  --bg: #0d1321;
-  --surface: #1d2d44;
-  --surface-hover: #253752;
-  --border: #2a3f5c;
-  --border-hover: #3e5c76;
-  --text: #f4f6f9;
-  --muted: #748cab;
-  --dim: #141c2e;
-}
-
+/* fontes do site, mantidas sobre os tokens do pure. tokens.css define
+   --font-sans/--font-mono/--font-display e vence a camada theme do
+   tailwind por ser CSS sem layer, entao a redeclaracao vem depois. */
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-display: var(--font-cormorant);
 }
 
-html {
-  scroll-behavior: smooth;
-  background-color: var(--bg);
+:root {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-cormorant);
 }
 
 body {
-  background-color: var(--bg);
-  color: var(--text);
   text-transform: lowercase;
-  -webkit-font-smoothing: antialiased;
-  font-family: var(--font-sans);
-  min-height: 100vh;
+  font-size: var(--text-15);
 }
 
-::selection {
-  background: var(--text);
-  color: var(--bg);
+/* eixo unico da coluna esquerda: hero, biohub, rodape e o alternador de
+   modo partem todos daqui, entao nada fica meio grau fora do prumo */
+:root {
+  --page-gutter: var(--space-48);
 }
 
-* {
-  box-sizing: border-box;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.hover-surface {
-  transition: background 0.2s ease, transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
-  cursor: pointer;
-}
-.hover-surface:hover {
-  background: var(--surface-hover) !important;
-  transform: translateY(-4px);
-}
-
-.hover-fade {
-  transition: opacity 0.2s ease;
-}
-.hover-fade:hover {
-  opacity: 0.7;
-}
-
-.link-muted {
-  color: var(--muted);
-  transition: color 0.2s ease;
-}
-.link-muted:hover {
-  color: var(--text);
-}
-
-.link-cta {
-  font-size: 0.875rem;
-  color: var(--text);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 2px;
-  transition: border-color 0.2s ease;
-}
-.link-cta:hover {
-  border-color: var(--text);
+@media (max-width: 900px) {
+  :root {
+    --page-gutter: var(--space-20);
+  }
 }
 
 .link-secondary {
-  font-size: 0.875rem;
+  font-size: var(--text-14);
   color: var(--muted);
-  transition: color 0.2s ease;
+  transition: color var(--duration-3) var(--ease-standard);
 }
 .link-secondary:hover {
   color: var(--text);
-}
-
-.btn-glass {
-  appearance: none;
-  -webkit-appearance: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--muted);
-  user-select: none;
-  background: #ffffff14 !important;
-  border: 1px solid #ffffff40 !important;
-  border-radius: 999px !important;
-  padding: 0.45rem 1rem;
-  cursor: pointer;
-  backdrop-filter: blur(72px) saturate(200%);
-  -webkit-backdrop-filter: blur(72px) saturate(200%);
-  box-shadow: 0 2px 10px #00000014, 0 4px 20px #0000000d, inset 0 1px 0 #ffffff80;
-  transition: color 0.2s, background 0.2s, box-shadow 0.2s, transform 0.2s;
-  outline: none;
-}
-.btn-glass:hover {
-  color: var(--text);
-  background: #ffffff4d !important;
-  border-color: #ffffff90 !important;
-  transform: translate(-4px) scale(1.04);
-  box-shadow: 0 6px 20px #0000002a, 0 8px 32px #00000018, inset 0 1px 0 #fffc;
-}
-:root.dark .btn-glass {
-  background: #ffffff0f !important;
-  border-color: #ffffff1a !important;
-  box-shadow: 0 2px 10px #0006, 0 4px 20px #00000047, inset 0 1px 0 #ffffff12;
-}
-:root.dark .btn-glass:hover {
-  background: #ffffff28 !important;
-  border-color: #ffffff50 !important;
-  transform: translate(-4px) scale(1.04);
-  box-shadow: 0 6px 20px #00000099, 0 8px 32px #00000066, inset 0 1px 0 #ffffff30;
-}
-
-@keyframes card-pop {
-  0%   { transform: translateY(0) scale(1); }
-  40%  { transform: translateY(-6px) scale(1.02); }
-  100% { transform: translateY(0) scale(1); }
-}
-
-.card-pop {
-  animation: card-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-@keyframes modal-fade {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes modal-scale {
-  from { opacity: 0; transform: translateY(10px) scale(0.97); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 /* hero layout — desktop */
@@ -185,10 +62,25 @@ a {
   z-index: 0;
 }
 
+/* o gradiente apaga o canvas, nao o conteudo. enquanto ele morava no
+   .hero-footer, que fica acima do layout para manter os links clicaveis,
+   ele lavava a base dos cartoes da ultima fileira. aqui ele fica dentro
+   do contexto do canvas e nada por cima o atravessa. */
+.hero-canvas-wrap::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 30%;
+  pointer-events: none;
+  background: linear-gradient(to top, var(--bg) 30%, transparent 100%);
+}
+
 .hero-layout {
   flex: 1;
   width: 100%;
-  padding: 56px 3rem 0;
+  padding: var(--space-56) var(--page-gutter) 0;
   position: relative;
   z-index: 1;
   display: flex;
@@ -225,31 +117,31 @@ a {
   right: 0;
   height: 30%;
   z-index: 2;
-  background: linear-gradient(to top, var(--bg) 30%, transparent 100%);
   pointer-events: none;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  padding: 0 3rem 1.25rem;
-  gap: 0.5rem;
+  padding: 0 var(--page-gutter) var(--space-20);
+  gap: var(--space-8);
 }
 
+/* grade de vidro: o gap deixa o canvas do hero aparecer entre os cartoes,
+   entao o container nao pinta a hairline. cada cartao carrega a sua
+   propria aresta, que e o que o material pede. */
 .apps-grid {
   display: grid;
   /* minmax(0, 1fr) instead of 1fr: without it the cards' min-content width
      forces uneven columns that overflow the container */
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1px;
-  background: var(--border);
+  gap: var(--space-8);
 }
 
 .app-card {
-  background: var(--surface);
-  padding: 1.5rem;
+  padding: var(--space-20);
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--space-12);
   height: 100%;
   color: inherit;
 }
@@ -263,12 +155,24 @@ a {
 }
 
 .biohub-page {
-  padding: 64px 3rem 4rem;
+  padding: var(--space-64) var(--page-gutter) var(--space-64);
 }
 
+/* grade sem hairline pintada no container: uma linha incompleta deixava o
+   --border do fundo aparecer como um bloco cinza nas celulas vazias */
 .biohub-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-8);
+}
+
+.biohub-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding: var(--space-20);
+  height: 100%;
+  min-height: 160px;
 }
 
 @media (max-width: 1100px) {
@@ -279,7 +183,7 @@ a {
 
 @media (max-width: 640px) {
   .biohub-page {
-    padding: 80px 1.25rem 3rem;
+    padding: var(--space-80) var(--page-gutter) var(--space-48);
   }
   .biohub-grid {
     grid-template-columns: 1fr;
@@ -302,8 +206,8 @@ a {
   .hero-layout {
     flex-direction: column;
     align-items: stretch;
-    padding: 96px 1.25rem 0;
-    gap: 3rem;
+    padding: var(--space-96) var(--page-gutter) 0;
+    gap: var(--space-48);
   }
   .hero-text,
   .hero-apps {
@@ -321,51 +225,138 @@ a {
     position: static;
     height: auto;
     background: none;
-    padding: 3rem 1.25rem 2rem;
+    padding: var(--space-48) var(--page-gutter) var(--space-32);
   }
   .apps-grid {
     grid-template-columns: 1fr;
   }
+  /* sem o canvas atras, o vidro nao tem o que refratar: os cartoes
+     voltam a ser superficie solida em vez de uma camada de composicao
+     sem efeito. */
+  .app-card.card-glass {
+    background-image: none;
+    background-color: var(--surface);
+    border-color: var(--border);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+  }
 }
 
-:where(a, button, [tabindex]):focus-visible {
-  outline: 2px solid var(--border-hover);
-  outline-offset: 2px;
+/* sem barra: o alternador de modo e uma pilula solta sobre o conteudo,
+   que e onde o vidro tem o que refratar */
+.mode-switch {
+  position: fixed;
+  top: var(--space-24);
+  left: var(--page-gutter);
+  z-index: 50;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+/* modal: o veu escurece e desfoca o fundo, a folha por cima e frost,
+   que e a unica textura com grao e a unica que carrega texto proprio. */
+.modal-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-16);
+  background-color: color-mix(in srgb, var(--slate-950) 45%, transparent);
+  -webkit-backdrop-filter: blur(var(--glass-blur-thin)) saturate(140%);
+  backdrop-filter: blur(var(--glass-blur-thin)) saturate(140%);
+  animation: pure-fade-scale var(--duration-3) var(--ease-out-soft) both;
+}
+
+/* a folha e .glass.glass-frost.glass-sq: o material vem do pure, aqui so
+   a caixa. o scroll fica no corpo interno para que o grao do ::after
+   cubra a folha inteira em vez de rolar junto com o texto. */
+.modal-sheet {
+  width: 100%;
+  max-width: 580px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-glass-hover);
+  animation: pure-fade-scale var(--duration-4) var(--ease-out-expo) both;
+}
+
+.modal-body {
+  overflow-y: auto;
+  /* min-height: auto num item de coluna flex resolve para o tamanho do
+     conteudo, entao o corpo estourava a folha em vez de rolar dentro dela */
+  min-height: 0;
+  padding: var(--space-40);
+}
+
+/* .glass:not(.card-glass) tem duas classes de especificidade e vence
+   .modal-sheet: sem estes pares a folha ficava com a sombra de repouso e
+   trocava para a de hover com o ponteiro em qualquer ponto dela */
+.modal-sheet.glass,
+.modal-sheet.glass:hover {
+  box-shadow: var(--shadow-glass-hover);
+}
+
+.modal-close {
+  position: absolute;
+  top: var(--space-20);
+  right: var(--space-20);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--hit-min);
+  min-height: var(--hit-min);
+  background: none;
+  border: none;
+  cursor: pointer;
+  /* texto sobre vidro usa --text: o fundo atras da folha e imprevisivel */
+  color: var(--text);
+  font-size: var(--text-18);
+  line-height: var(--leading-none);
+  border-radius: var(--radius-control);
+  transition: opacity var(--duration-3) var(--ease-standard);
+  opacity: 0.6;
+}
+.modal-close:hover {
+  opacity: 1;
 }
 
 @media (max-width: 768px) {
+  .modal-close {
+    min-width: var(--hit-min-touch);
+    min-height: var(--hit-min-touch);
+  }
   .section-pad {
-    padding: 64px 0 !important;
+    padding: var(--space-64) 0 !important;
   }
   .opinions-row {
     flex-direction: column !important;
-    gap: 0.5rem !important;
+    gap: var(--space-8) !important;
   }
   .opinions-meta {
     flex-direction: row !important;
-    gap: 1rem !important;
+    gap: var(--space-16) !important;
     align-items: flex-start !important;
   }
   .footer-links {
     flex-wrap: wrap !important;
-    gap: 1rem !important;
+    gap: var(--space-16) !important;
   }
   .footer-separator {
     display: none !important;
   }
+}
+
+/* o pop dos cartoes reage ao botao do hero. transform e opacity apenas,
+   nas curvas nomeadas da linguagem. */
+@keyframes card-pop {
+  0%   { transform: translateY(0) scale(1); }
+  40%  { transform: translateY(calc(-3 * var(--nudge-1))) scale(1.02); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+.card-pop {
+  animation: card-pop var(--duration-6) var(--ease-out-soft) forwards;
 }
 
 /* tag colors — light */
@@ -397,31 +388,31 @@ a {
 .badge-status-development { color: #2563eb; background: rgba(59,130,246,0.12);  border: 1px solid rgba(59,130,246,0.35); }
 .badge-status-portfolio   { color: #6b7280; background: rgba(107,114,128,0.1);  border: 1px solid rgba(107,114,128,0.3); }
 
-/* tag colors — dark */
-:root.dark .badge-python       { color: #fbbf24; background: rgba(251,191,36,0.1);   border-color: rgba(251,191,36,0.25); }
-:root.dark .badge-bash         { color: #a3e635; background: rgba(163,230,53,0.1);   border-color: rgba(163,230,53,0.25); }
-:root.dark .badge-javascript   { color: #fbbf24; background: rgba(251,191,36,0.1);   border-color: rgba(251,191,36,0.25); }
-:root.dark .badge-typescript   { color: #60a5fa; background: rgba(96,165,250,0.1);   border-color: rgba(96,165,250,0.25); }
-:root.dark .badge-css          { color: #818cf8; background: rgba(129,140,248,0.1);  border-color: rgba(129,140,248,0.25); }
-:root.dark .badge-docker       { color: #60a5fa; background: rgba(96,165,250,0.1);   border-color: rgba(96,165,250,0.25); }
-:root.dark .badge-scikit-learn { color: #fb923c; background: rgba(251,146,60,0.1);   border-color: rgba(251,146,60,0.25); }
-:root.dark .badge-tensorflow   { color: #fb923c; background: rgba(251,146,60,0.1);   border-color: rgba(251,146,60,0.25); }
-:root.dark .badge-html         { color: #fb923c; background: rgba(251,146,60,0.1);   border-color: rgba(251,146,60,0.25); }
-:root.dark .badge-r            { color: #818cf8; background: rgba(129,140,248,0.1);  border-color: rgba(129,140,248,0.25); }
-:root.dark .badge-nextflow     { color: #34d399; background: rgba(52,211,153,0.1);   border-color: rgba(52,211,153,0.25); }
-:root.dark .badge-nextjs       { color: #e2e8f0; background: rgba(226,232,240,0.08); border-color: rgba(226,232,240,0.2); }
-:root.dark .badge-react        { color: #7dd3fc; background: rgba(125,211,252,0.1);  border-color: rgba(125,211,252,0.25); }
-:root.dark .badge-biopython    { color: #6ee7b7; background: rgba(110,231,183,0.1);  border-color: rgba(110,231,183,0.25); }
+/* tag colors — deep-blue */
+:root.deep-blue .badge-python       { color: #fbbf24; background: rgba(251,191,36,0.1);   border-color: rgba(251,191,36,0.25); }
+:root.deep-blue .badge-bash         { color: #a3e635; background: rgba(163,230,53,0.1);   border-color: rgba(163,230,53,0.25); }
+:root.deep-blue .badge-javascript   { color: #fbbf24; background: rgba(251,191,36,0.1);   border-color: rgba(251,191,36,0.25); }
+:root.deep-blue .badge-typescript   { color: #60a5fa; background: rgba(96,165,250,0.1);   border-color: rgba(96,165,250,0.25); }
+:root.deep-blue .badge-css          { color: #818cf8; background: rgba(129,140,248,0.1);  border-color: rgba(129,140,248,0.25); }
+:root.deep-blue .badge-docker       { color: #60a5fa; background: rgba(96,165,250,0.1);   border-color: rgba(96,165,250,0.25); }
+:root.deep-blue .badge-scikit-learn { color: #fb923c; background: rgba(251,146,60,0.1);   border-color: rgba(251,146,60,0.25); }
+:root.deep-blue .badge-tensorflow   { color: #fb923c; background: rgba(251,146,60,0.1);   border-color: rgba(251,146,60,0.25); }
+:root.deep-blue .badge-html         { color: #fb923c; background: rgba(251,146,60,0.1);   border-color: rgba(251,146,60,0.25); }
+:root.deep-blue .badge-r            { color: #818cf8; background: rgba(129,140,248,0.1);  border-color: rgba(129,140,248,0.25); }
+:root.deep-blue .badge-nextflow     { color: #34d399; background: rgba(52,211,153,0.1);   border-color: rgba(52,211,153,0.25); }
+:root.deep-blue .badge-nextjs       { color: #e2e8f0; background: rgba(226,232,240,0.08); border-color: rgba(226,232,240,0.2); }
+:root.deep-blue .badge-react        { color: #7dd3fc; background: rgba(125,211,252,0.1);  border-color: rgba(125,211,252,0.25); }
+:root.deep-blue .badge-biopython    { color: #6ee7b7; background: rgba(110,231,183,0.1);  border-color: rgba(110,231,183,0.25); }
 
-/* type colors — dark */
-:root.dark .badge-type-web  { color: #a78bfa; background: rgba(167,139,250,0.1);  border-color: rgba(167,139,250,0.25); }
-:root.dark .badge-type-cli  { color: #fb923c; background: rgba(251,146,60,0.1);   border-color: rgba(251,146,60,0.25); }
-:root.dark .badge-type-pip  { color: #22d3ee; background: rgba(34,211,238,0.1);   border-color: rgba(34,211,238,0.25); }
-:root.dark .badge-type-api  { color: #34d399; background: rgba(52,211,153,0.1);   border-color: rgba(52,211,153,0.25); }
+/* type colors — deep-blue */
+:root.deep-blue .badge-type-web  { color: #a78bfa; background: rgba(167,139,250,0.1);  border-color: rgba(167,139,250,0.25); }
+:root.deep-blue .badge-type-cli  { color: #fb923c; background: rgba(251,146,60,0.1);   border-color: rgba(251,146,60,0.25); }
+:root.deep-blue .badge-type-pip  { color: #22d3ee; background: rgba(34,211,238,0.1);   border-color: rgba(34,211,238,0.25); }
+:root.deep-blue .badge-type-api  { color: #34d399; background: rgba(52,211,153,0.1);   border-color: rgba(52,211,153,0.25); }
 
-/* status colors — dark */
-:root.dark .badge-status-live,
-:root.dark .badge-status-launched    { color: #4ade80; background: rgba(74,222,128,0.1);  border-color: rgba(74,222,128,0.25); }
-:root.dark .badge-status-beta        { color: #fbbf24; background: rgba(251,191,36,0.1);  border-color: rgba(251,191,36,0.25); }
-:root.dark .badge-status-development { color: #60a5fa; background: rgba(96,165,250,0.1);  border-color: rgba(96,165,250,0.25); }
-:root.dark .badge-status-portfolio   { color: #9ca3af; background: rgba(156,163,175,0.1); border-color: rgba(156,163,175,0.25); }
+/* status colors — deep-blue */
+:root.deep-blue .badge-status-live,
+:root.deep-blue .badge-status-launched    { color: #4ade80; background: rgba(74,222,128,0.1);  border-color: rgba(74,222,128,0.25); }
+:root.deep-blue .badge-status-beta        { color: #fbbf24; background: rgba(251,191,36,0.1);  border-color: rgba(251,191,36,0.25); }
+:root.deep-blue .badge-status-development { color: #60a5fa; background: rgba(96,165,250,0.1);  border-color: rgba(96,165,250,0.25); }
+:root.deep-blue .badge-status-portfolio   { color: #9ca3af; background: rgba(156,163,175,0.1); border-color: rgba(156,163,175,0.25); }

@@ -8,6 +8,9 @@ interface FadeInProps {
   className?: string;
 }
 
+/* a entrada e disparada por scroll, entao continua no observer em vez de
+   .fade-up, que e uma animacao de carga. as curvas e as duracoes sao as
+   nomeadas da linguagem; so transform e opacity animam. */
 export function FadeIn({ children, delay = 0, className = "" }: FadeInProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -34,8 +37,8 @@ export function FadeIn({ children, delay = 0, className = "" }: FadeInProps) {
       className={className}
       style={{
         opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(20px)",
-        transition: `opacity 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}ms`,
+        transform: visible ? "translateY(0)" : "translateY(var(--space-16))",
+        transition: `opacity var(--duration-6) var(--ease-out-soft) ${delay}ms, transform var(--duration-6) var(--ease-out-soft) ${delay}ms`,
       }}
     >
       {children}

@@ -1,4 +1,3 @@
-import { Nav } from "@/components/nav";
 import { FadeIn } from "@/components/fade-in";
 
 const tools = [
@@ -58,7 +57,6 @@ export default function BiohubPage() {
 
   return (
     <>
-      <Nav />
       <div
         className="biohub-page"
         style={{
@@ -70,7 +68,7 @@ export default function BiohubPage() {
         <FadeIn>
           <div style={{ marginBottom: "2.5rem", display: "flex", alignItems: "baseline", gap: "3rem" }}>
             <div style={{ flexShrink: 0 }}>
-              <a href="/" className="btn-glass" style={{ marginBottom: "1.5rem", display: "inline-flex" }}>
+              <a href="/" className="pill pill-solid" style={{ marginBottom: "1.5rem", display: "inline-flex" }}>
                 <span>&#8592;</span> home
               </a>
               <p
@@ -118,8 +116,6 @@ export default function BiohubPage() {
         <div
           className="biohub-grid"
           style={{
-            gap: "1px",
-            background: "var(--border)",
             marginTop: "2rem",
             marginBottom: "auto",
           }}
@@ -128,16 +124,7 @@ export default function BiohubPage() {
             <FadeIn key={tool.id} delay={i * 50}>
               <a
                 href={tool.href}
-                className="hover-surface"
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "0.5rem",
-                  padding: "1.25rem",
-                  background: "var(--surface)",
-                  height: "100%",
-                  minHeight: "160px",
-                }}
+                className="biohub-card surface hover-surface"
               >
                 <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-start" }}>
                   <span
@@ -177,7 +164,7 @@ export default function BiohubPage() {
                   {tool.description}
                 </p>
 
-                <span className="btn-glass" style={{ alignSelf: "flex-start", marginTop: "auto" }}>
+                <span className="pill pill-sm pill-solid" style={{ alignSelf: "flex-start", marginTop: "auto" }}>
                   open <span>&#8594;</span>
                 </span>
               </a>

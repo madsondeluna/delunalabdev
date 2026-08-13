@@ -94,7 +94,9 @@ function AppCard({ app, index }: { app: App; index: number }) {
     return () => window.removeEventListener("pop-cards", handler);
   }, [index, reducedMotion]);
 
-  const className = `app-card ${isLive ? "hover-surface" : ""} ${
+  // os cartoes do hero ficam sobre o canvas, entao o vidro tem o que
+  // refratar; abaixo de 900px o canvas sai e o CSS devolve a superficie solida
+  const className = `app-card card-glass ${isLive ? "glass-lift" : ""} ${
     popping ? "card-pop" : ""
   }`.trim();
 

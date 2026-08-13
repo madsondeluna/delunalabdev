@@ -14,7 +14,7 @@ function GlassButton() {
   };
 
   return (
-    <button className="btn-glass" onClick={handleClick}>
+    <button className="pill glass-lift" onClick={handleClick}>
       explore the applications <span aria-hidden="true">&#8594;</span>
     </button>
   );
@@ -73,9 +73,9 @@ export function HeroContent() {
   }, [reducedMotion]);
 
   const fade = (delay: number): React.CSSProperties => ({
-    transition: `opacity 1s cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform 1s cubic-bezier(0.16,1,0.3,1) ${delay}ms`,
+    transition: `opacity var(--duration-6) var(--ease-out-expo) ${delay}ms, transform var(--duration-6) var(--ease-out-expo) ${delay}ms`,
     opacity: mounted ? 1 : 0,
-    transform: mounted ? "translateY(0)" : "translateY(16px)",
+    transform: mounted ? "translateY(0)" : "translateY(var(--space-16))",
   });
 
   return (
@@ -86,8 +86,8 @@ export function HeroContent() {
         style={{
           position: "absolute",
           inset: "-18rem -20rem",
-          backdropFilter: "blur(5px)",
-          WebkitBackdropFilter: "blur(5px)",
+          backdropFilter: "blur(var(--glass-blur-thin))",
+          WebkitBackdropFilter: "blur(var(--glass-blur-thin))",
           WebkitMaskImage: "radial-gradient(ellipse at 40% 50%, black 0%, black 45%, transparent 100%)",
           maskImage: "radial-gradient(ellipse at 40% 50%, black 0%, black 45%, transparent 100%)",
           zIndex: -1,
@@ -131,7 +131,8 @@ export function HeroContent() {
             letterSpacing: "0.02em",
             display: "inline-block",
             minWidth: "2.8rem",
-            transition: "opacity 0.4s ease, filter 0.4s ease",
+            transition:
+              "opacity var(--duration-5) var(--ease-out-soft), filter var(--duration-5) var(--ease-out-soft)",
             opacity: suffixVisible ? 1 : 0,
             filter: suffixVisible ? "blur(0px)" : "blur(8px)",
           }}
@@ -158,7 +159,8 @@ export function HeroContent() {
             textAlign: "center",
             color: "var(--muted)",
             fontWeight: 300,
-            transition: "opacity 0.4s ease, filter 0.4s ease",
+            transition:
+              "opacity var(--duration-5) var(--ease-out-soft), filter var(--duration-5) var(--ease-out-soft)",
             opacity: visible ? 1 : 0,
             filter: visible ? "blur(0px)" : "blur(8px)",
           }}

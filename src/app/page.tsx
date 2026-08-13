@@ -1,4 +1,4 @@
-import { Nav } from "@/components/nav";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { HeroCanvas } from "@/components/hero-canvas";
 import { HeroContent } from "@/components/hero";
 import { AppsGrid } from "@/components/apps";
@@ -9,7 +9,9 @@ export default function Page() {
 
   return (
     <>
-      <Nav />
+      <div className="mode-switch">
+        <ThemeToggle />
+      </div>
       <section className="hero-section">
         <div className="hero-canvas-wrap" aria-hidden="true">
           <HeroCanvas />
