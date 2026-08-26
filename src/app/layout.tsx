@@ -62,8 +62,11 @@ export const metadata: Metadata = {
     description:
       "Bioinformatics tools, data apps, and science software for researchers.",
   },
-  /* a marca do casaco do retrato, vetorizada da ilustracao */
-  icons: { icon: [{ url: "/mark.svg", type: "image/svg+xml" }] },
+  /* Um ponto. A marca do casaco tem traco fino e miolo vazado e a 16px
+     numa aba vira borrao; o ponto le em qualquer tamanho e troca de cor
+     com o tema da ABA, que segue o sistema e nao o modo da pagina.
+     mark.svg continua sendo a marca, para uso na pagina. */
+  icons: { icon: [{ url: "/favicon.svg", type: "image/svg+xml" }] },
   robots: {
     index: true,
     follow: true,
