@@ -489,19 +489,54 @@ body {
   transform: scale(1.28);
 }
 
-/* traco preto sobre branco nao entra cru num modo escuro: o quadrado
-   branco vira um farol dentro do circulo. Nos escuros o desenho inverte,
-   e a leitura e a mesma pelo outro lado. */
+/* ---------- o desenho acompanha o modo ----------
+
+   O avatar e traco preto sobre branco opaco. Entrar cru custa nos dois
+   lados: num modo escuro o quadrado branco vira um farol dentro do
+   circulo, e num modo claro ele apaga a superficie que o circulo pinta.
+
+   `filter: invert(1)` resolvia metade e mentia na outra: ele troca preto
+   por branco, mas o FUNDO continua opaco e o circulo nunca mostra o modo.
+
+   A mistura resolve as duas de uma vez, e sem arquivo novo:
+
+     nos modos claros, `multiply` deixa cair o branco (multiplicar por 1
+     nao muda nada) e mantem o traco (multiplicar por 0 escurece tudo).
+     O traco fica escuro sobre a superficie do modo.
+
+     nos escuros, o desenho inverte primeiro e `screen` deixa cair o
+     preto pela razao espelhada. O traco fica claro sobre a superficie
+     do modo.
+
+   Nos dois casos o fundo do desenho DESAPARECE e quem aparece atras dele
+   e a superficie que o circulo pinta, entao ele muda de cor junto com a
+   pagina em vez de carregar a propria.
+
+   `isolation: isolate` no circulo prende a mistura ali dentro: sem ela o
+   blend procura o proximo contexto de empilhamento e o desenho mistura
+   com a chuva de caracteres do fundo. */
+.byline-photo {
+  isolation: isolate;
+  background: var(--surface);
+  --surface-context: var(--surface);
+}
+
+/* O arquivo ja vem enquadrado para uso circular, entao ele PREENCHE o
+   circulo e nada e encolhido para caber. Uma tentativa de encaixar por
+   escala foi feita e revertida: ela resolvia um corte que era do desenho
+   de prova, nao do arquivo real, e encolher uma composicao ja resolvida
+   e estragar o enquadramento de quem a fez. */
 .byline-photo .drawn {
+  object-fit: cover;
   object-position: center;
   transform: none;
-  background: var(--paper-50);
+  mix-blend-mode: multiply;
 }
 
 :root.deep-blue .byline-photo .drawn,
 :root.dark .byline-photo .drawn {
   filter: invert(1);
-  background: none;
+  mix-blend-mode: screen;
 }
 
 @media (max-width: 900px) {
