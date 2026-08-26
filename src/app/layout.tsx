@@ -62,6 +62,8 @@ export const metadata: Metadata = {
     description:
       "Bioinformatics tools, data apps, and science software for researchers.",
   },
+  /* a marca do casaco do retrato, vetorizada da ilustracao */
+  icons: { icon: [{ url: "/mark.svg", type: "image/svg+xml" }] },
   robots: {
     index: true,
     follow: true,
