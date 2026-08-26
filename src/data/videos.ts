@@ -10,7 +10,7 @@ export interface Video {
 export const videos: Video[] = [
   {
     id: 1,
-    title: "setting up a bioinformatics environment on macos",
+    title: "Setting up a bioinformatics environment on macos",
     duration: "22:14",
     platform: "youtube",
     url: "#",
@@ -18,7 +18,7 @@ export const videos: Video[] = [
   },
   {
     id: 2,
-    title: "nextflow from scratch: your first pipeline",
+    title: "Nextflow from scratch: your first pipeline",
     duration: "38:07",
     platform: "youtube",
     url: "#",
@@ -26,7 +26,7 @@ export const videos: Video[] = [
   },
   {
     id: 3,
-    title: "deploying a python api with docker and railway",
+    title: "Deploying a Python API with Docker and railway",
     duration: "19:42",
     platform: "youtube",
     url: "#",
@@ -34,7 +34,7 @@ export const videos: Video[] = [
   },
   {
     id: 4,
-    title: "building a variant browser with react and fastapi",
+    title: "Building a variant browser with react and fastapi",
     duration: "51:33",
     platform: "youtube",
     url: "#",
@@ -42,7 +42,7 @@ export const videos: Video[] = [
   },
   {
     id: 5,
-    title: "understanding vcf files for clinical genomics",
+    title: "Understanding vcf files for clinical genomics",
     duration: "27:18",
     platform: "youtube",
     url: "#",
@@ -50,7 +50,7 @@ export const videos: Video[] = [
   },
   {
     id: 6,
-    title: "how i structure my python bioinformatics projects",
+    title: "How i structure my Python bioinformatics projects",
     duration: "14:55",
     platform: "youtube",
     url: "#",

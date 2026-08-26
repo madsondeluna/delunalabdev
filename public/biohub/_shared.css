@@ -1,78 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&family=Geist+Mono:wght@300;400;500&family=Cormorant+Garamond:wght@300;400;500&display=swap');
+/* biohub / _shared.css
 
-/* light mode (default) */
-:root {
-  --bg:            #f4f6f9;
-  --surface:       #ebeef3;
-  --surface-hover: #e1e5ec;
-  --border:        #ced3dc;
-  --border-hover:  #748cab;
-  --text:          #0d1321;
-  --muted:         #3e5c76;
-  --dim:           #dde1e9;
-  --font-sans:     'Geist', -apple-system, sans-serif;
-  --font-mono:     'Geist Mono', 'SF Mono', 'Menlo', monospace;
-  --font-display:  'Cormorant Garamond', Georgia, serif;
-  --color-text-primary:   #0d1321;
-  --color-text-secondary: #3e5c76;
-  --color-border:         #ced3dc;
-  --color-background:     #f4f6f9;
-  --color-surface:        #ebeef3;
-  --color-surface-light:  #e1e5ec;
-  --color-primary:        #3e5c76;
-  --border-radius:        2px;
-  --glass-bg:             rgba(255,255,255,0.55);
-  --glass-border:         rgba(0,0,0,0.12);
-  --glass-shadow:         0 2px 10px rgba(0,0,0,0.08), 0 4px 20px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.9);
-  --glass-bg-hover:       rgba(255,255,255,0.75);
-}
+   As oito ferramentas partilham este arquivo, entao ele e o unico lugar
+   onde elas mudam de aparencia. Ate aqui ele carregava a propria paleta,
+   as proprias fontes e o proprio modo escuro, tudo em literal: era um
+   segundo sistema de design vivendo dentro do mesmo dominio.
 
-/* dark mode — via OS preference or explicit class */
-@media (prefers-color-scheme: dark) {
-  :root:not(.light-mode) {
-    --bg:            #0d1321;
-    --surface:       #1d2d44;
-    --surface-hover: #253752;
-    --border:        #2a3f5c;
-    --border-hover:  #3e5c76;
-    --text:          #f4f6f9;
-    --muted:         #748cab;
-    --dim:           #141c2e;
-    --color-text-primary:   #f4f6f9;
-    --color-text-secondary: #748cab;
-    --color-border:         #2a3f5c;
-    --color-background:     #0d1321;
-    --color-surface:        #1d2d44;
-    --color-surface-light:  #253752;
-    --glass-bg:             rgba(255,255,255,0.06);
-    --glass-border:         rgba(255,255,255,0.12);
-    --glass-shadow:         0 2px 10px rgba(0,0,0,0.4), 0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.08);
-    --glass-bg-hover:       rgba(255,255,255,0.12);
-  }
-}
+   Agora ele importa a linguagem. Nada de cor, tipo, raio, sombra ou
+   curva nasce mais aqui: o que sobra sao as regras de forma que so estas
+   telas tem, e todas elas resolvem para token.
 
-html.dark-mode {
-  --bg:            #0d1321;
-  --surface:       #1d2d44;
-  --surface-hover: #253752;
-  --border:        #2a3f5c;
-  --border-hover:  #3e5c76;
-  --text:          #f4f6f9;
-  --muted:         #748cab;
-  --dim:           #141c2e;
-  --color-text-primary:   #f4f6f9;
-  --color-text-secondary: #748cab;
-  --color-border:         #2a3f5c;
-  --color-background:     #0d1321;
-  --color-surface:        #1d2d44;
-  --color-surface-light:  #253752;
-  --glass-bg:             rgba(255,255,255,0.06);
-  --glass-border:         rgba(255,255,255,0.12);
-  --glass-shadow:         0 2px 10px rgba(0,0,0,0.4), 0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.08);
-  --glass-bg-hover:       rgba(255,255,255,0.12);
-}
+   Os arquivos vem por URL e nao pelo empacotador porque estas paginas
+   sao HTML estatico, servido direto de public/. */
 
-*, *::before, *::after { box-sizing: border-box; }
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,300..400&family=Public+Sans:wght@300;400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap");
+@import url("/pure/tokens.css");
+@import url("/pure/patterns.css");
+@import url("/pure/light.css");
 
 html { background: var(--bg); }
 
@@ -85,7 +28,6 @@ body {
   margin: 0;
   padding: 2rem;
   -webkit-font-smoothing: antialiased;
-  text-transform: lowercase;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -152,13 +94,13 @@ nav { margin: 0; }
   font-size: 0.625rem;
   letter-spacing: 0.1em;
   color: var(--muted);
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  background: var(--surface-glass);
+  border: 1px solid var(--glass-edge);
   border-radius: 999px;
   padding: 4px 14px;
   backdrop-filter: blur(72px) saturate(200%);
   -webkit-backdrop-filter: blur(72px) saturate(200%);
-  box-shadow: var(--glass-shadow);
+  box-shadow: var(--shadow-glass-rest);
   transition: color 0.2s, background 0.2s, box-shadow 0.2s, transform 0.2s;
   display: inline-flex;
   align-items: center;
@@ -166,7 +108,7 @@ nav { margin: 0; }
 }
 .nav-link:hover {
   color: var(--text);
-  background: var(--glass-bg-hover);
+  background: var(--surface-hover-glass);
   transform: translate(-2px);
 }
 
@@ -204,7 +146,7 @@ textarea, input[type="number"], input[type="text"], select {
   padding: 0.6rem 0.75rem;
   background: var(--dim);
   border: 1px solid var(--border);
-  border-radius: var(--border-radius);
+  border-radius: var(--radius-field);
   font-family: var(--font-mono);
   font-size: 0.75rem;
   color: var(--text);
@@ -235,74 +177,111 @@ select {
 }
 
 /* glass button base */
-button, .upload-btn {
-  appearance: none !important;
-  -webkit-appearance: none !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 0.4rem !important;
-  font-family: var(--font-mono) !important;
-  font-size: 0.7rem !important;
-  letter-spacing: 0.08em !important;
-  color: var(--muted) !important;
-  background: var(--glass-bg) !important;
-  border: 1px solid var(--glass-border) !important;
-  border-radius: 999px !important;
-  padding: 0.45rem 1.1rem !important;
-  cursor: pointer !important;
-  backdrop-filter: blur(72px) saturate(200%) !important;
-  -webkit-backdrop-filter: blur(72px) saturate(200%) !important;
-  box-shadow: var(--glass-shadow) !important;
-  transition: color 0.2s, background 0.2s, box-shadow 0.2s, transform 0.2s !important;
-  white-space: nowrap !important;
-  width: auto !important;
-  text-transform: lowercase !important;
+/* O controle destas telas E a pilula da linguagem, escrita aqui porque
+   estas paginas nao passam pelo empacotador.
+
+   O que saiu, e cada um era um defeito:
+
+     --glass-bg, --glass-border e --glass-shadow, que apontavam para
+     tokens de uma paleta que nao existe mais desde que este arquivo
+     passou a importar a linguagem: as tres resolviam para nada;
+
+     desfoque de 72px numa pilula de 32px de altura. O raio do desfoque
+     precisa caber na caixa, senao o Chrome amostra alem dela e desenha
+     um bloco fantasma no primeiro de uma fileira de vizinhos;
+
+     backdrop-filter declarado ANTES da -webkit-, que e a ordem em que o
+     minificador guarda so a prefixada e o vidro sai sem desfoque nenhum;
+
+     vinte !important, que existiam para vencer uma cascata que nao
+     existe mais.
+
+   A unidade do aglomerado liquido fica FORA: ela e espelho de um blob e
+   precisa da propria caixa. Vesti-la de pilula desalinhava as duas
+   camadas e as gotas apareciam deslocadas atras dos botoes. */
+button:not(.liquid-item),
+.upload-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  min-height: var(--hit-min);
+  padding: var(--space-8) var(--space-16);
+  border-radius: var(--radius-control);
+  font-family: var(--font-mono);
+  font-size: var(--text-13);
+  line-height: var(--leading-snug);
+  color: var(--text);
+  cursor: pointer;
+  white-space: nowrap;
+  width: auto;
+
+  background-image: var(--glass-fill);
+  background-color: transparent;
+  border: var(--hairline) solid var(--glass-edge);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  box-shadow: var(--shadow-glass-rest);
+  isolation: isolate;
+
+  transition:
+    background-image var(--duration-5) var(--ease-out-soft),
+    border-color var(--duration-5) var(--ease-out-soft),
+    box-shadow var(--duration-5) var(--ease-out-soft),
+    color var(--duration-4) var(--ease-out-soft);
 }
 
-button:hover, .upload-btn:hover {
-  color: var(--text) !important;
-  background: var(--glass-bg-hover) !important;
-  transform: translate(-2px) !important;
+@media (pointer: coarse) {
+  button:not(.liquid-item),
+  .upload-btn { min-height: var(--hit-min-touch); }
+}
+
+button:not(.liquid-item):hover,
+.upload-btn:hover {
+  background-image: var(--glass-fill-hover);
+  border-color: var(--glass-edge-hover);
+  box-shadow: var(--shadow-glass-hover);
 }
 
 /* green glass — convert / calculate */
 #convert-btn, #calculate-btn {
-  color: #16a34a !important;
-  background: rgba(34,197,94,0.08) !important;
-  border-color: rgba(34,197,94,0.3) !important;
-  box-shadow: 0 2px 10px rgba(34,197,94,0.08), inset 0 1px 0 rgba(34,197,94,0.15) !important;
+  color: var(--status-good) !important;
+  background: color-mix(in oklab, var(--status-good) 8%, transparent) !important;
+  border-color: color-mix(in oklab, var(--status-good) 30%, transparent) !important;
+  box-shadow: var(--shadow-glass-rest), inset 0 1px 0 color-mix(in oklab, var(--status-good) 15%, transparent) !important;
 }
 #convert-btn:hover, #calculate-btn:hover {
-  color: #15803d !important;
-  background: rgba(34,197,94,0.14) !important;
-  border-color: rgba(34,197,94,0.5) !important;
+  color: var(--status-good) !important;
+  background: color-mix(in oklab, var(--status-good) 14%, transparent) !important;
+  border-color: color-mix(in oklab, var(--status-good) 50%, transparent) !important;
 }
 
 /* red glass — clear */
 #clear-btn {
-  color: #dc2626 !important;
-  background: rgba(220,38,38,0.08) !important;
-  border-color: rgba(220,38,38,0.3) !important;
-  box-shadow: 0 2px 10px rgba(220,38,38,0.08), inset 0 1px 0 rgba(220,38,38,0.1) !important;
+  color: var(--status-critical) !important;
+  background: color-mix(in oklab, var(--status-critical) 8%, transparent) !important;
+  border-color: color-mix(in oklab, var(--status-critical) 30%, transparent) !important;
+  box-shadow: var(--shadow-glass-rest), inset 0 1px 0 color-mix(in oklab, var(--status-critical) 10%, transparent) !important;
 }
 #clear-btn:hover {
-  color: #b91c1c !important;
-  background: rgba(220,38,38,0.14) !important;
-  border-color: rgba(220,38,38,0.5) !important;
+  color: var(--status-critical) !important;
+  background: color-mix(in oklab, var(--status-critical) 14%, transparent) !important;
+  border-color: color-mix(in oklab, var(--status-critical) 50%, transparent) !important;
 }
 
 /* blue glass — copy / download */
 #copy-btn, #download-btn, #download-pqr, #download-dx, #copy-result-btn {
-  color: #2563eb !important;
-  background: rgba(37,99,235,0.08) !important;
-  border-color: rgba(37,99,235,0.3) !important;
-  box-shadow: 0 2px 10px rgba(37,99,235,0.08), inset 0 1px 0 rgba(37,99,235,0.1) !important;
+  color: var(--accent) !important;
+  background: color-mix(in oklab, var(--accent) 8%, transparent) !important;
+  border-color: color-mix(in oklab, var(--accent) 30%, transparent) !important;
+  box-shadow: var(--shadow-glass-rest), inset 0 1px 0 color-mix(in oklab, var(--accent) 10%, transparent) !important;
 }
 #copy-btn:hover, #download-btn:hover, #download-pqr:hover, #download-dx:hover {
-  color: #1d4ed8 !important;
-  background: rgba(37,99,235,0.14) !important;
-  border-color: rgba(37,99,235,0.5) !important;
+  color: var(--accent) !important;
+  background: color-mix(in oklab, var(--accent) 14%, transparent) !important;
+  border-color: color-mix(in oklab, var(--accent) 50%, transparent) !important;
 }
 
 /* upload button — dashed outline */
@@ -322,14 +301,14 @@ button:hover, .upload-btn:hover {
 
 /* yellow glass — simplified mode */
 #simple-mode-btn {
-  color: #d97706 !important;
-  background: rgba(245,158,11,0.08) !important;
-  border-color: rgba(245,158,11,0.3) !important;
-  box-shadow: 0 2px 10px rgba(245,158,11,0.08), inset 0 1px 0 rgba(245,158,11,0.1) !important;
+  color: var(--status-warning) !important;
+  background: color-mix(in oklab, var(--status-warning) 8%, transparent) !important;
+  border-color: color-mix(in oklab, var(--status-warning) 30%, transparent) !important;
+  box-shadow: var(--shadow-glass-rest), inset 0 1px 0 color-mix(in oklab, var(--status-warning) 10%, transparent) !important;
 }
 #simple-mode-btn:hover {
-  background: rgba(245,158,11,0.14) !important;
-  border-color: rgba(245,158,11,0.5) !important;
+  background: color-mix(in oklab, var(--status-warning) 14%, transparent) !important;
+  border-color: color-mix(in oklab, var(--status-warning) 50%, transparent) !important;
 }
 
 .output-controls {
@@ -636,14 +615,14 @@ button:hover, .upload-btn:hover {
 }
 
 .info-note {
-  border: 1px solid rgba(245,158,11,0.3) !important;
-  background: rgba(245,158,11,0.06) !important;
+  border: 1px solid color-mix(in oklab, var(--status-warning) 30%, transparent) !important;
+  background: color-mix(in oklab, var(--status-warning) 6%, transparent) !important;
   padding: 1rem;
   margin-bottom: 1.5rem;
 }
 
 .info-note h3 {
-  color: #d97706 !important;
+  color: var(--status-warning) !important;
   font-size: 0.7rem !important;
   margin: 0 0 0.5rem 0 !important;
 }
@@ -660,6 +639,13 @@ button:hover, .upload-btn:hover {
   font-size: 0.75rem;
   color: var(--text);
 }
+
+/* O rodape e fixo e ocupa 20% da tela, entao o conteudo precisa parar
+   antes dele. Sem esta folga os botoes da ultima fileira caiam debaixo
+   do gradiente e ficavam lavados: o rodape nao recebe ponteiro, entao
+   eles continuavam clicaveis e pareciam desabilitados, que e a pior
+   combinacao das duas. */
+body { padding-bottom: 22vh; }
 
 footer {
   position: fixed;
@@ -709,4 +695,50 @@ footer a:hover { color: var(--text); }
   #viewer-controls { flex: none; width: 100%; }
 
   .column-selector { flex-direction: column; }
+}
+
+
+/* ---------- aglomerados ----------
+   O seletor de modo e os links sociais sao unidades de TAMANHO FIXO com
+   icone dentro, que e exatamente o caso do material liquido: as gotas se
+   fundem pelo filtro goo em vez de ficarem soltas.
+
+   O rotulo nao some, vira aria-label e title. Rotulo de largura variavel
+   continuaria em .pill; aqui nao ha rotulo visivel a espelhar. */
+.modes,
+.social {
+  --liquid-pad: var(--space-8);
+  --liquid-size: var(--space-40);
+}
+
+.modes .liquid-item,
+.social .liquid-item {
+  color: var(--muted);
+  transition: color var(--duration-3) var(--ease-standard);
+}
+.modes .liquid-item:hover,
+.social .liquid-item:hover,
+.modes .liquid-item[aria-pressed="true"] { color: var(--text); }
+
+.modes:has(.liquid-item:nth-child(1)[aria-pressed="true"]) .liquid-blob:nth-child(1),
+.modes:has(.liquid-item:nth-child(2)[aria-pressed="true"]) .liquid-blob:nth-child(2),
+.modes:has(.liquid-item:nth-child(3)[aria-pressed="true"]) .liquid-blob:nth-child(3),
+.modes:has(.liquid-item:nth-child(4)[aria-pressed="true"]) .liquid-blob:nth-child(4) {
+  --liquid-swell: 1.12;
+}
+
+/* o cabecalho da ferramenta: o link de volta e o seletor na mesma
+   fileira, e a fileira alinha pela base do texto do link */
+.tool-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+  flex-wrap: wrap;
+}
+
+footer .social { justify-content: center; }
+
+@media (pointer: coarse) {
+  .modes,
+  .social { --liquid-size: var(--hit-min-touch); }
 }

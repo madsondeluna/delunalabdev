@@ -13,7 +13,7 @@ export const opinions: Opinion[] = [
   {
     id: 1,
     slug: "reproducibility-over-novelty",
-    title: "why reproducibility matters more than novelty in science",
+    title: "Why reproducibility matters more than novelty in science",
     date: "2025-03-10",
     readTime: "5 min",
     excerpt:
@@ -32,7 +32,7 @@ the best open-source projects i have read share one trait: someone cared more ab
   {
     id: 2,
     slug: "python-is-not-slow",
-    title: "python is not slow. your code is slow.",
+    title: "Python is not slow. Your code is slow.",
     date: "2025-02-18",
     readTime: "4 min",
     excerpt:
@@ -51,7 +51,7 @@ rewriting in rust or c++ is sometimes the right answer. but it is almost never t
   {
     id: 3,
     slug: "cost-of-complexity",
-    title: "the real cost of complexity in research software",
+    title: "The real cost of complexity in research software",
     date: "2025-01-30",
     readTime: "6 min",
     excerpt:
@@ -72,7 +72,7 @@ when i review code now, the first question i ask is: can a new lab member unders
   {
     id: 4,
     slug: "stop-dreading-the-terminal",
-    title: "how i stopped dreading the terminal and started building with it",
+    title: "How i stopped dreading the terminal and started building with it",
     date: "2024-12-05",
     readTime: "7 min",
     excerpt:

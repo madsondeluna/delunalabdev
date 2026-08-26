@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script>try{var t=localStorage.getItem("theme");if(t==="dark")document.documentElement.classList.add("dark-mode");else if(t==="light")document.documentElement.classList.add("light-mode")}catch(e){}</script>
+    <script>/* o modo antes da primeira pintura, na mesma chave do site: sem isto a
+    ferramenta abre no claro e pisca. "dark" guardado antes de 1.6.0
+    significava o azul, entao ele e traduzido. */
+try{var m=localStorage.getItem("theme");if(m==="dark")m="deep-blue";if(m&&m!=="light")document.documentElement.classList.add(m)}catch(e){}</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hydrophobicity Plot</title>
@@ -12,28 +15,39 @@
     <link rel="stylesheet" href="../_shared.css">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
-<body>
+<body class="lit-cursor-only">
     <div class="container">
         <header>
-            <h1>Hydrophobicity Analyzer and Plot Generator</h1>
-            <p id="typing-text">kyte-doolittle hydrophobicity profile for protein sequences</p>
-            <nav>
+            <h1>Hydrophobicity analyzer and plot generator</h1>
+            <p id="typing-text">Kyte-doolittle hydrophobicity profile for protein sequences</p>
+            <nav class="tool-nav">
                 <a href="/biohub" class="nav-link">← Back to BioHub</a>
+            <div class="liquid liquid-tight modes" role="group" aria-label="Colour mode">
+              <div class="liquid-sheet" aria-hidden="true">
+                <span class="liquid-blob"></span><span class="liquid-blob"></span><span class="liquid-blob"></span><span class="liquid-blob"></span>
+              </div>
+              <div class="liquid-content">
+                <button class="liquid-item" type="button" data-mode="" aria-label="Light" title="Light"><svg class="icon icon-sm" aria-hidden="true"><use href="/pure/icons.svg#sun"/></svg></button>
+                <button class="liquid-item" type="button" data-mode="paper-like" aria-label="Paper-like" title="Paper-like"><svg class="icon icon-sm" aria-hidden="true"><use href="/pure/icons.svg#book"/></svg></button>
+                <button class="liquid-item" type="button" data-mode="deep-blue" aria-label="Deep blue" title="Deep blue"><svg class="icon icon-sm" aria-hidden="true"><use href="/pure/icons.svg#moon"/></svg></button>
+                <button class="liquid-item" type="button" data-mode="dark" aria-label="Dark" title="Dark"><svg class="icon icon-sm" aria-hidden="true"><use href="/pure/icons.svg#contrast"/></svg></button>
+              </div>
+            </div>
             </nav>
         </header>
 
         <main>
             <div class="calculator-layout">
                 <div class="io-box">
-                    <h2>FASTA Sequence Input</h2>
+                    <h2>FASTA sequence input</h2>
                     <textarea id="fasta-input" rows="10" placeholder=">Protein_ID&#10;MTEITAAMVKELRESTGAGMMDCKNALSETNGDFDKREKGLGKAAKKADRLAAEG&#10;"></textarea>
                     
-                    <button id="calculate-btn">Generate Plot</button>
+                    <button id="calculate-btn">Generate plot</button>
                     <button id="clear-btn">Clear</button>
                 </div>
 
                 <div class="io-box">
-                    <h2>Kyte-Doolittle Hydrophobicity</h2>
+                    <h2>Kyte-Doolittle hydrophobicity</h2>
                     <div class="plot-container-hydro">
                         <div id="hydrophobicity-plot"></div>
                     </div>
@@ -47,12 +61,102 @@
     <footer>
         <span>&copy; 2026 gromads</span>
         <div class="footer-links">
-            <a href="https://madsondeluna.com">portfolio</a>
-            <a href="https://github.com/madsondeluna">github</a>
-            <a href="https://x.com/madsondeluna">twitter</a>
-            <a href="https://www.linkedin.com/in/madsonaragao/">linkedin</a>
-            <a href="mailto:madsondeluna@gmail.com">mail</a>
+            <div class="liquid liquid-tight social">
+              <div class="liquid-sheet" aria-hidden="true"><span class="liquid-blob"></span><span class="liquid-blob"></span><span class="liquid-blob"></span><span class="liquid-blob"></span><span class="liquid-blob"></span></div>
+              <div class="liquid-content"><a class="liquid-item" href="https://madsondeluna.com" aria-label="Portfolio" title="Portfolio" target="_blank" rel="noopener"><svg class="icon icon-sm" aria-hidden="true"><use href="/pure/icons.svg#user"/></svg></a><a class="liquid-item" href="https://github.com/madsondeluna" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener"><svg class="icon icon-sm" aria-hidden="true"><use href="/pure/icons.svg#branch"/></svg></a><a class="liquid-item" href="https://x.com/madsondeluna" aria-label="Twitter" title="Twitter" target="_blank" rel="noopener"><svg class="icon icon-sm" aria-hidden="true"><use href="/pure/icons.svg#send"/></svg></a><a class="liquid-item" href="https://www.linkedin.com/in/madsonaragao/" aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener"><svg class="icon icon-sm" aria-hidden="true"><use href="/pure/icons.svg#users"/></svg></a><a class="liquid-item" href="mailto:madsondeluna@gmail.com" aria-label="Mail" title="Mail"><svg class="icon icon-sm" aria-hidden="true"><use href="/pure/icons.svg#mail"/></svg></a></div>
+            </div>
         </div>
     </footer>
+
+<svg class="pure-defs" aria-hidden="true" focusable="false" width="0" height="0"><defs>
+  <filter id="pure-goo-tight" x="-40%" y="-40%" width="180%" height="180%" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur"/>
+    <feColorMatrix in="blur" type="matrix"
+      values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -7.83" result="goo"/>
+    <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+  </filter>
+
+  <filter id="pure-goo" x="-40%" y="-40%" width="180%" height="180%" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
+    <feColorMatrix in="blur" type="matrix"
+      values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo"/>
+    <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+  </filter>
+
+  <filter id="pure-goo-wide" x="-40%" y="-40%" width="180%" height="180%" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur"/>
+    <feColorMatrix in="blur" type="matrix"
+      values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 16 -6.17" result="goo"/>
+    <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+  </filter>
+  <!-- ---------- lente ----------
+
+       O vidro desta linguagem desfoca o fundo. A lente o DOBRA, e a
+       diferenca e visivel: dentro dela o que esta atras aparece maior e
+       entortado, como atraves de vidro grosso de verdade.
+
+       Nada disso e escala em CSS: e amostragem. feDisplacementMap le a
+       posicao de cada pixel do fundo num MAPA, onde o canal R carrega o
+       deslocamento horizontal, o G o vertical e 128 e o repouso. Um
+       degrade de 255 a 0 atravessando o circulo faz cada ponto amostrar
+       de mais perto do centro, e amostrar de mais perto E ampliar.
+
+       Sao DOIS passes encadeados, e serem dois e o ponto:
+
+         corpo  plano no miolo e ingreme na beirada, entao o centro
+                amplia limpo. Escala 0,52.
+         anel   exatamente 128 nos 80 por cento centrais e vertical nas
+                pontas. Nao amplia nada: so entorta o que passa rente a
+                borda. Escala 0,18.
+
+       As duas escalas sao a leitura "gota", escolhida na tela entre
+       cinco: pequena, muito curva, aumento forte no miolo. As outras
+       quatro (lupa, vidro grosso, anel, bolha) mudavam so este par e o
+       diametro, entao trocar de leitura e trocar dois numeros aqui e um
+       token, nunca reescrever o filtro.
+
+       Num mapa so, subir a beirada arrasta o miolo junto. Separados, um
+       se ajusta sem o outro.
+
+       Os numeros e os mapas NAO sao tokens, pela mesma razao dos filtros
+       goo logo acima: feImage e feDisplacementMap nao leem var(), e um
+       token que nada resolve e um token que mente. Os dois mapas saem de
+       tools/lens-map.mjs, entao eles sao reproduziveis em vez de string
+       opaca colada aqui.
+
+       primitiveUnits objectBoundingBox e o que faz a lente servir a
+       qualquer tamanho: as escalas viram fracao da propria caixa, entao
+       trocar --light-lens nao pede filtro novo.
+
+       A regiao vai a 200 por cento porque o deslocamento amostra FORA da
+       caixa. Sem a folga, a beirada puxa de uma area que o filtro nao
+       tem e devolve um entalhe transparente rente ao contorno. -->
+  <filter id="pure-lens" x="-50%" y="-50%" width="200%" height="200%"
+          primitiveUnits="objectBoundingBox" color-interpolation-filters="sRGB">
+    <feImage href="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22r%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%220%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22rgb(255%2C0%2C0)%22%2F%3E%3Cstop%20offset%3D%220.06%22%20stop-color%3D%22rgb(190%2C0%2C0)%22%2F%3E%3Cstop%20offset%3D%220.3%22%20stop-color%3D%22rgb(136%2C0%2C0)%22%2F%3E%3Cstop%20offset%3D%220.5%22%20stop-color%3D%22rgb(128%2C0%2C0)%22%2F%3E%3Cstop%20offset%3D%220.7%22%20stop-color%3D%22rgb(120%2C0%2C0)%22%2F%3E%3Cstop%20offset%3D%220.94%22%20stop-color%3D%22rgb(66%2C0%2C0)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22rgb(0%2C0%2C0)%22%2F%3E%3C%2FlinearGradient%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22rgb(0%2C255%2C0)%22%2F%3E%3Cstop%20offset%3D%220.06%22%20stop-color%3D%22rgb(0%2C190%2C0)%22%2F%3E%3Cstop%20offset%3D%220.3%22%20stop-color%3D%22rgb(0%2C136%2C0)%22%2F%3E%3Cstop%20offset%3D%220.5%22%20stop-color%3D%22rgb(0%2C128%2C0)%22%2F%3E%3Cstop%20offset%3D%220.7%22%20stop-color%3D%22rgb(0%2C120%2C0)%22%2F%3E%3Cstop%20offset%3D%220.94%22%20stop-color%3D%22rgb(0%2C66%2C0)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22rgb(0%2C0%2C0)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22rgb(128%2C128%2C0)%22%2F%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%22100%22%20r%3D%22100%22%20fill%3D%22url(%23r)%22%2F%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%22100%22%20r%3D%22100%22%20fill%3D%22url(%23g)%22%20style%3D%22mix-blend-mode%3Ascreen%22%2F%3E%3C%2Fsvg%3E" x="0" y="0" width="1" height="1" preserveAspectRatio="none" result="lens-body"/>
+    <feImage href="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22r%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%220%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22rgb(255%2C0%2C0)%22%2F%3E%3Cstop%20offset%3D%220.1%22%20stop-color%3D%22rgb(128%2C0%2C0)%22%2F%3E%3Cstop%20offset%3D%220.9%22%20stop-color%3D%22rgb(128%2C0%2C0)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22rgb(0%2C0%2C0)%22%2F%3E%3C%2FlinearGradient%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22rgb(0%2C255%2C0)%22%2F%3E%3Cstop%20offset%3D%220.1%22%20stop-color%3D%22rgb(0%2C128%2C0)%22%2F%3E%3Cstop%20offset%3D%220.9%22%20stop-color%3D%22rgb(0%2C128%2C0)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22rgb(0%2C0%2C0)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22rgb(128%2C128%2C0)%22%2F%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%22100%22%20r%3D%22100%22%20fill%3D%22url(%23r)%22%2F%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%22100%22%20r%3D%22100%22%20fill%3D%22url(%23g)%22%20style%3D%22mix-blend-mode%3Ascreen%22%2F%3E%3C%2Fsvg%3E" x="0" y="0" width="1" height="1" preserveAspectRatio="none" result="lens-rim"/>
+    <feDisplacementMap in="SourceGraphic" in2="lens-body" scale="0.52" xChannelSelector="R" yChannelSelector="G" result="lens-warp"/>
+    <feDisplacementMap in="lens-warp" in2="lens-rim" scale="0.18" xChannelSelector="R" yChannelSelector="G" result="lens-bent"/>
+    <feGaussianBlur in="lens-bent" stdDeviation="0.005"/>
+  </filter>
+</defs></svg>
+<div class="lit-cursor" aria-hidden="true"></div>
+<script>
+/* o seletor de modo, mesmo contrato do site: a escolha vai para a mesma
+   chave, entao trocar aqui muda o site inteiro na proxima visita. */
+(function(){
+  var C=["paper-like","deep-blue","dark"];
+  function apply(m){
+    document.documentElement.classList.remove.apply(document.documentElement.classList,C);
+    if(m)document.documentElement.classList.add(m);
+    try{localStorage.setItem("theme",m||"light")}catch(e){}
+    document.querySelectorAll("[data-mode]").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.mode===m))});
+  }
+  document.querySelectorAll("[data-mode]").forEach(function(b){b.addEventListener("click",function(){apply(b.dataset.mode)})});
+  var cur=C.filter(function(c){return document.documentElement.classList.contains(c)})[0]||"";
+  document.querySelectorAll("[data-mode]").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.mode===cur))});
+})();
+</script>
+<script src="/pure/light.js" defer></script>
 </body>
 </html>

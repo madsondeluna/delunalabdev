@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script>try{var t=localStorage.getItem("theme");if(t==="dark")document.documentElement.classList.add("dark-mode");else if(t==="light")document.documentElement.classList.add("light-mode")}catch(e){}</script>
+    <script>/* o modo antes da primeira pintura, na mesma chave do site: sem isto a
+    ferramenta abre no claro e pisca. "dark" guardado antes de 1.6.0
+    significava o azul, entao ele e traduzido. */
+try{var m=localStorage.getItem("theme");if(m==="dark")m="deep-blue";if(m&&m!=="light")document.documentElement.classList.add(m)}catch(e){}</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Calculate and visualize electrostatic surface potential using PDB2PQR/APBS">
@@ -15,21 +18,32 @@
     <script src="https://unpkg.com/ngl@2.0.0-dev.38/dist/ngl.js"></script>
     <script src="../molecular-viewer.js"></script>
 </head>
-<body>
+<body class="lit-cursor-only">
     <div class="container">
         <header>
             <div class="header-content">
-                <h1>Electrostatic Surface Calculator</h1>
-                <p id="typing-text">calculate electrostatic surface potential using pdb2pqr and apbs</p>
+                <h1>Electrostatic surface calculator</h1>
+                <p id="typing-text">Calculate electrostatic surface potential using pdb2pqr and apbs</p>
             </div>
-            <nav>
+            <nav class="tool-nav">
                 <a href="/biohub" class="nav-link">← Back to BioHub</a>
+            <div class="liquid liquid-tight modes" role="group" aria-label="Colour mode">
+              <div class="liquid-sheet" aria-hidden="true">
+                <span class="liquid-blob"></span><span class="liquid-blob"></span><span class="liquid-blob"></span><span class="liquid-blob"></span>
+              </div>
+              <div class="liquid-content">
+                <button class="liquid-item" type="button" data-mode="" aria-label="Light" title="Light"><svg class="icon icon-sm" aria-hidden="true"><use href="/pure/icons.svg#sun"/></svg></button>
+                <button class="liquid-item" type="button" data-mode="paper-like" aria-label="Paper-like" title="Paper-like"><svg class="icon icon-sm" aria-hidden="true"><use href="/pure/icons.svg#book"/></svg></button>
+                <button class="liquid-item" type="button" data-mode="deep-blue" aria-label="Deep blue" title="Deep blue"><svg class="icon icon-sm" aria-hidden="true"><use href="/pure/icons.svg#moon"/></svg></button>
+                <button class="liquid-item" type="button" data-mode="dark" aria-label="Dark" title="Dark"><svg class="icon icon-sm" aria-hidden="true"><use href="/pure/icons.svg#contrast"/></svg></button>
+              </div>
+            </div>
             </nav>
         </header>
 
         <main>
-            <div class="info-note" style="background: rgba(255, 193, 7, 0.1); border: 1px solid #ffc107; border-radius: 4px; padding: 1rem; margin-bottom: 1.5rem;">
-                <h3 style="margin: 0 0 0.5rem 0; color: #ffc107; font-size: 1rem;">Important: API Instability Notice</h3>
+            <div class="info-note" style="background: color-mix(in oklab, var(--status-warning) 10%, transparent); border: var(--hairline) solid var(--status-warning); border-radius: 4px; padding: 1rem; margin-bottom: 1.5rem;">
+                <h3 style="margin: 0 0 0.5rem 0; color: var(--status-warning); font-size: 1rem;">Important: API instability notice</h3>
                 <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; line-height: 1.5;">
                     The <strong>PDB2PQR/APBS web server API is undergoing changes</strong>, which may cause connection instability or failures. This is <u>not an error in this tool</u>, it's a temporary limitation.
                 </p>
@@ -41,15 +55,15 @@
                 <p style="margin: 0; font-size: 0.9rem; line-height: 1.5;">
                     <strong>Skip the Wait:</strong> Click <strong>"Use Simplified Mode"</strong> button to directly use the fallback model without trying APBS first.
                 </p>
-                <p style="margin: 0.5rem 0 0 0; font-size: 0.85rem; color: #999;">
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.85rem; color: var(--muted);">
                     <strong>Simple Solution:</strong> Install a CORS browser extension (e.g., "CORS Unblock") or use local APBS installation for production work. See <code>CORS_SETUP.md</code> for details.
                 </p>
             </div>
             
             <div class="converter-grid">
                 <div class="io-box">
-                    <h2>PDB Input</h2>
-                    <label for="pdb-upload" class="upload-btn">Upload PDB File</label>
+                    <h2>PDB input</h2>
+                    <label for="pdb-upload" class="upload-btn">Upload PDB file</label>
                     <input type="file" id="pdb-upload" accept=".pdb" hidden>
                     <textarea 
                         id="pdb-input" 
@@ -57,9 +71,9 @@
                         placeholder="Or paste PDB content here..."></textarea>
                     
                     <div class="params-box">
-                        <h3>APBS Parameters</h3>
+                        <h3>APBS parameters</h3>
                         <div class="param-group">
-                            <label for="forcefield">Force Field:</label>
+                            <label for="forcefield">Force field:</label>
                             <select id="forcefield">
                                 <option value="AMBER">AMBER</option>
                                 <option value="CHARMM">CHARMM</option>
@@ -76,7 +90,7 @@
                             <span class="param-info">Solution pH</span>
                         </div>
                         <div class="param-group">
-                            <label for="ion-conc">Ion Concentration (M):</label>
+                            <label for="ion-conc">Ion concentration (M):</label>
                             <input type="number" id="ion-conc" value="0.15" min="0" max="1" step="0.01">
                             <span class="param-info">Ionic strength</span>
                         </div>
@@ -84,46 +98,46 @@
                 </div>
 
                 <div class="io-box">
-                    <h2>Electrostatic Results</h2>
+                    <h2>Electrostatic results</h2>
                     
                     <div id="status-container" class="status-box">
                         <p>Upload a PDB file and click "Calculate" to start</p>
                     </div>
 
                     <div id="viewer-container" style="display: none; margin: 20px 0;">
-                        <h3 style="font-size: 14px; margin-bottom: 10px;">3D Visualization</h3>
+                        <h3 style="font-size: 14px; margin-bottom: 10px;">3D visualization</h3>
                         <div class="viewer-controls" style="margin-bottom: 10px;">
                             <button id="toggle-spin" class="control-button">Toggle Spin</button>
                             <button id="center-view" class="control-button">Center View</button>
-                            <button id="toggle-surface" class="control-button">Toggle Surface</button>
+                            <button id="toggle-surface" class="control-button">Toggle surface</button>
                         </div>
-                        <div id="viewport" style="width: 100%; height: 500px; background: #000; border-radius: 4px;"></div>
+                        <div id="viewport" style="width: 100%; height: 500px; background: var(--graphite-950); border-radius: 4px;"></div>
                         <div style="margin-top: 10px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 4px;">
-                            <div style="font-size: 12px; font-weight: 500; margin-bottom: 8px; color: var(--color-text-secondary);">Electrostatic Potential Scale:</div>
+                            <div style="font-size: 12px; font-weight: 500; margin-bottom: 8px; color: var(--muted);">Electrostatic Potential Scale:</div>
                             <div style="display: flex; align-items: center; gap: 10px;">
-                                <span style="font-size: 11px; color: var(--color-text-secondary);">-5 kT/e</span>
-                                <div style="flex: 1; height: 20px; background: linear-gradient(to right, #FF0000, #FF8888, #FFFFFF, #8888FF, #0000FF); border-radius: 4px;"></div>
-                                <span style="font-size: 11px; color: var(--color-text-secondary);">+5 kT/e</span>
+                                <span style="font-size: 11px; color: var(--muted);">-5 kT/e</span>
+                                <div style="flex: 1; height: 20px; background: linear-gradient(to right, var(--div-1), var(--div-3), var(--div-5), var(--div-7), var(--div-9)); border-radius: 4px;"></div>
+                                <span style="font-size: 11px; color: var(--muted);">+5 kT/e</span>
                             </div>
-                            <div style="margin-top: 8px; font-size: 11px; color: var(--color-text-secondary); text-align: center;">
+                            <div style="margin-top: 8px; font-size: 11px; color: var(--muted); text-align: center;">
                                 Red = Negative (acidic) | Blue = Positive (basic)
                             </div>
                         </div>
                     </div>
 
                     <div id="results-container" style="display: none;">
-                        <h3>Analysis Summary</h3>
+                        <h3>Analysis summary</h3>
                         <textarea id="results-output" rows="10" readonly placeholder="Results will appear here..."></textarea>
                         <div class="output-controls">
                             <button id="download-pqr">Download PQR</button>
-                            <button id="download-dx">Download DX (Potential Grid)</button>
+                            <button id="download-dx">Download DX (Potential grid)</button>
                         </div>
                     </div>
                 </div>
 
                 <div style="display: flex; gap: 10px; margin-top: 10px;">
-                    <button id="calculate-btn" style="flex: 2;">Calculate with APBS (Try Server First)</button>
-                    <button id="simple-mode-btn" style="flex: 1; background: var(--color-warning, #ffc107); border-color: var(--color-warning, #ffc107);">Use Simplified Mode</button>
+                    <button id="calculate-btn" style="flex: 2;">Calculate with APBS (Try server first)</button>
+                    <button id="simple-mode-btn" style="flex: 1; background: var(--status-warning); border-color: var(--status-warning);">Use simplified mode</button>
                 </div>
                 <button id="clear-btn" style="margin-top: 10px; width: 100%;">Clear</button>
             </div> 
@@ -135,12 +149,102 @@
     <footer>
         <span>&copy; 2026 gromads</span>
         <div class="footer-links">
-            <a href="https://madsondeluna.com">portfolio</a>
-            <a href="https://github.com/madsondeluna">github</a>
-            <a href="https://x.com/madsondeluna">twitter</a>
-            <a href="https://www.linkedin.com/in/madsonaragao/">linkedin</a>
-            <a href="mailto:madsondeluna@gmail.com">mail</a>
+            <div class="liquid liquid-tight social">
+              <div class="liquid-sheet" aria-hidden="true"><span class="liquid-blob"></span><span class="liquid-blob"></span><span class="liquid-blob"></span><span class="liquid-blob"></span><span class="liquid-blob"></span></div>
+              <div class="liquid-content"><a class="liquid-item" href="https://madsondeluna.com" aria-label="Portfolio" title="Portfolio" target="_blank" rel="noopener"><svg class="icon icon-sm" aria-hidden="true"><use href="/pure/icons.svg#user"/></svg></a><a class="liquid-item" href="https://github.com/madsondeluna" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener"><svg class="icon icon-sm" aria-hidden="true"><use href="/pure/icons.svg#branch"/></svg></a><a class="liquid-item" href="https://x.com/madsondeluna" aria-label="Twitter" title="Twitter" target="_blank" rel="noopener"><svg class="icon icon-sm" aria-hidden="true"><use href="/pure/icons.svg#send"/></svg></a><a class="liquid-item" href="https://www.linkedin.com/in/madsonaragao/" aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener"><svg class="icon icon-sm" aria-hidden="true"><use href="/pure/icons.svg#users"/></svg></a><a class="liquid-item" href="mailto:madsondeluna@gmail.com" aria-label="Mail" title="Mail"><svg class="icon icon-sm" aria-hidden="true"><use href="/pure/icons.svg#mail"/></svg></a></div>
+            </div>
         </div>
     </footer>
+
+<svg class="pure-defs" aria-hidden="true" focusable="false" width="0" height="0"><defs>
+  <filter id="pure-goo-tight" x="-40%" y="-40%" width="180%" height="180%" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur"/>
+    <feColorMatrix in="blur" type="matrix"
+      values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -7.83" result="goo"/>
+    <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+  </filter>
+
+  <filter id="pure-goo" x="-40%" y="-40%" width="180%" height="180%" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
+    <feColorMatrix in="blur" type="matrix"
+      values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo"/>
+    <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+  </filter>
+
+  <filter id="pure-goo-wide" x="-40%" y="-40%" width="180%" height="180%" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur"/>
+    <feColorMatrix in="blur" type="matrix"
+      values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 16 -6.17" result="goo"/>
+    <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+  </filter>
+  <!-- ---------- lente ----------
+
+       O vidro desta linguagem desfoca o fundo. A lente o DOBRA, e a
+       diferenca e visivel: dentro dela o que esta atras aparece maior e
+       entortado, como atraves de vidro grosso de verdade.
+
+       Nada disso e escala em CSS: e amostragem. feDisplacementMap le a
+       posicao de cada pixel do fundo num MAPA, onde o canal R carrega o
+       deslocamento horizontal, o G o vertical e 128 e o repouso. Um
+       degrade de 255 a 0 atravessando o circulo faz cada ponto amostrar
+       de mais perto do centro, e amostrar de mais perto E ampliar.
+
+       Sao DOIS passes encadeados, e serem dois e o ponto:
+
+         corpo  plano no miolo e ingreme na beirada, entao o centro
+                amplia limpo. Escala 0,52.
+         anel   exatamente 128 nos 80 por cento centrais e vertical nas
+                pontas. Nao amplia nada: so entorta o que passa rente a
+                borda. Escala 0,18.
+
+       As duas escalas sao a leitura "gota", escolhida na tela entre
+       cinco: pequena, muito curva, aumento forte no miolo. As outras
+       quatro (lupa, vidro grosso, anel, bolha) mudavam so este par e o
+       diametro, entao trocar de leitura e trocar dois numeros aqui e um
+       token, nunca reescrever o filtro.
+
+       Num mapa so, subir a beirada arrasta o miolo junto. Separados, um
+       se ajusta sem o outro.
+
+       Os numeros e os mapas NAO sao tokens, pela mesma razao dos filtros
+       goo logo acima: feImage e feDisplacementMap nao leem var(), e um
+       token que nada resolve e um token que mente. Os dois mapas saem de
+       tools/lens-map.mjs, entao eles sao reproduziveis em vez de string
+       opaca colada aqui.
+
+       primitiveUnits objectBoundingBox e o que faz a lente servir a
+       qualquer tamanho: as escalas viram fracao da propria caixa, entao
+       trocar --light-lens nao pede filtro novo.
+
+       A regiao vai a 200 por cento porque o deslocamento amostra FORA da
+       caixa. Sem a folga, a beirada puxa de uma area que o filtro nao
+       tem e devolve um entalhe transparente rente ao contorno. -->
+  <filter id="pure-lens" x="-50%" y="-50%" width="200%" height="200%"
+          primitiveUnits="objectBoundingBox" color-interpolation-filters="sRGB">
+    <feImage href="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22r%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%220%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22rgb(255%2C0%2C0)%22%2F%3E%3Cstop%20offset%3D%220.06%22%20stop-color%3D%22rgb(190%2C0%2C0)%22%2F%3E%3Cstop%20offset%3D%220.3%22%20stop-color%3D%22rgb(136%2C0%2C0)%22%2F%3E%3Cstop%20offset%3D%220.5%22%20stop-color%3D%22rgb(128%2C0%2C0)%22%2F%3E%3Cstop%20offset%3D%220.7%22%20stop-color%3D%22rgb(120%2C0%2C0)%22%2F%3E%3Cstop%20offset%3D%220.94%22%20stop-color%3D%22rgb(66%2C0%2C0)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22rgb(0%2C0%2C0)%22%2F%3E%3C%2FlinearGradient%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22rgb(0%2C255%2C0)%22%2F%3E%3Cstop%20offset%3D%220.06%22%20stop-color%3D%22rgb(0%2C190%2C0)%22%2F%3E%3Cstop%20offset%3D%220.3%22%20stop-color%3D%22rgb(0%2C136%2C0)%22%2F%3E%3Cstop%20offset%3D%220.5%22%20stop-color%3D%22rgb(0%2C128%2C0)%22%2F%3E%3Cstop%20offset%3D%220.7%22%20stop-color%3D%22rgb(0%2C120%2C0)%22%2F%3E%3Cstop%20offset%3D%220.94%22%20stop-color%3D%22rgb(0%2C66%2C0)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22rgb(0%2C0%2C0)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22rgb(128%2C128%2C0)%22%2F%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%22100%22%20r%3D%22100%22%20fill%3D%22url(%23r)%22%2F%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%22100%22%20r%3D%22100%22%20fill%3D%22url(%23g)%22%20style%3D%22mix-blend-mode%3Ascreen%22%2F%3E%3C%2Fsvg%3E" x="0" y="0" width="1" height="1" preserveAspectRatio="none" result="lens-body"/>
+    <feImage href="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22r%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%220%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22rgb(255%2C0%2C0)%22%2F%3E%3Cstop%20offset%3D%220.1%22%20stop-color%3D%22rgb(128%2C0%2C0)%22%2F%3E%3Cstop%20offset%3D%220.9%22%20stop-color%3D%22rgb(128%2C0%2C0)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22rgb(0%2C0%2C0)%22%2F%3E%3C%2FlinearGradient%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22rgb(0%2C255%2C0)%22%2F%3E%3Cstop%20offset%3D%220.1%22%20stop-color%3D%22rgb(0%2C128%2C0)%22%2F%3E%3Cstop%20offset%3D%220.9%22%20stop-color%3D%22rgb(0%2C128%2C0)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22rgb(0%2C0%2C0)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22rgb(128%2C128%2C0)%22%2F%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%22100%22%20r%3D%22100%22%20fill%3D%22url(%23r)%22%2F%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%22100%22%20r%3D%22100%22%20fill%3D%22url(%23g)%22%20style%3D%22mix-blend-mode%3Ascreen%22%2F%3E%3C%2Fsvg%3E" x="0" y="0" width="1" height="1" preserveAspectRatio="none" result="lens-rim"/>
+    <feDisplacementMap in="SourceGraphic" in2="lens-body" scale="0.52" xChannelSelector="R" yChannelSelector="G" result="lens-warp"/>
+    <feDisplacementMap in="lens-warp" in2="lens-rim" scale="0.18" xChannelSelector="R" yChannelSelector="G" result="lens-bent"/>
+    <feGaussianBlur in="lens-bent" stdDeviation="0.005"/>
+  </filter>
+</defs></svg>
+<div class="lit-cursor" aria-hidden="true"></div>
+<script>
+/* o seletor de modo, mesmo contrato do site: a escolha vai para a mesma
+   chave, entao trocar aqui muda o site inteiro na proxima visita. */
+(function(){
+  var C=["paper-like","deep-blue","dark"];
+  function apply(m){
+    document.documentElement.classList.remove.apply(document.documentElement.classList,C);
+    if(m)document.documentElement.classList.add(m);
+    try{localStorage.setItem("theme",m||"light")}catch(e){}
+    document.querySelectorAll("[data-mode]").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.mode===m))});
+  }
+  document.querySelectorAll("[data-mode]").forEach(function(b){b.addEventListener("click",function(){apply(b.dataset.mode)})});
+  var cur=C.filter(function(c){return document.documentElement.classList.contains(c)})[0]||"";
+  document.querySelectorAll("[data-mode]").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.mode===cur))});
+})();
+</script>
+<script src="/pure/light.js" defer></script>
 </body>
 </html>

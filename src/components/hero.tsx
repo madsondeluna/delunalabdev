@@ -4,7 +4,12 @@ import { useEffect, useState } from "react";
 import { useReducedMotion } from "./use-reduced-motion";
 
 function GlassButton() {
+  const [open, setOpen] = useState(false);
+
   const handleClick = () => {
+    /* o percurso da seta dura o percurso e some: nao e estado do botao */
+    setOpen(true);
+    setTimeout(() => setOpen(false), 600);
     window.dispatchEvent(new CustomEvent("pop-cards"));
     // only on the stacked layout: on desktop the grid sits inside an
     // overflow:hidden section with no scrollbar to get back
@@ -14,8 +19,23 @@ function GlassButton() {
   };
 
   return (
-    <button className="pill glass-lift" onClick={handleClick}>
-      explore the applications <span aria-hidden="true">&#8594;</span>
+    /* Um rotulo de largura variavel mora em .pill, nao numa unidade de
+       aglomerado: a unidade liquida tem tamanho FIXO porque as duas
+       camadas do material sao espelhos, e uma largura que depende do
+       texto so se espelha medindo texto.
+
+       Entao o botao engloba o rotulo inteiro, como vidro, e quem se move
+       e a seta: ela sai pela direita e volta pela esquerda. O botao fica
+       parado, do mesmo tamanho, do inicio ao fim. */
+    <button
+      className={`pill glass lit lit-swell explore ${open ? "is-go" : ""}`}
+      data-lit
+      onClick={handleClick}
+    >
+      Explore the applications
+      <svg className="icon icon-sm" aria-hidden="true">
+        <use href="/pure/icons.svg#arrow-right" />
+      </svg>
     </button>
   );
 }
@@ -24,7 +44,7 @@ const cyclingWords = [
   "building tools",
   "testing hypotheses",
   "designing systems",
-  "exploring ai",
+  "exploring AI",
   "automating workflows",
   "training models",
   "shipping software",
@@ -86,39 +106,43 @@ export function HeroContent() {
         style={{
           position: "absolute",
           inset: "-18rem -20rem",
-          backdropFilter: "blur(var(--glass-blur-thin))",
-          WebkitBackdropFilter: "blur(var(--glass-blur-thin))",
+          WebkitBackdropFilter: "blur(var(--glass-blur-frost))",
+          backdropFilter: "blur(var(--glass-blur-frost))",
           WebkitMaskImage: "radial-gradient(ellipse at 40% 50%, black 0%, black 45%, transparent 100%)",
           maskImage: "radial-gradient(ellipse at 40% 50%, black 0%, black 45%, transparent 100%)",
           zIndex: -1,
           pointerEvents: "none",
         }}
       />
-      <p
-        className="hero-nowrap"
-        style={{
-          ...fade(0),
-          fontFamily: "var(--font-mono)",
-          fontSize: "0.625rem",
-          color: "var(--muted)",
-          letterSpacing: "0.18em",
-          marginBottom: "2rem",
-        }}
-      >
-        madson a. de luna-aragão / virtual development lab
-      </p>
+      <div className="byline" style={{ ...fade(0), marginBottom: "var(--space-24)" }}>
+        <span className="byline-photo">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="drawn"
+            src="/profile/face-3.png"
+            alt="Madson A. de Luna-Aragão"
+            width={160}
+            height={160}
+          />
+        </span>
+        <span className="byline-text">
+          <span className="byline-name">Madson A. de Luna-Aragão</span>
+          <span className="byline-role">Virtual development lab</span>
+        </span>
+      </div>
 
       <h1
         className="hero-nowrap"
         style={{
           ...fade(80),
           fontFamily: "var(--font-display)",
+          fontStretch: "var(--font-display-stretch)",
           fontSize: "clamp(3.5rem, 7vw, 7rem)",
-          fontWeight: 300,
-          lineHeight: 0.92,
-          letterSpacing: "-0.03em",
+          fontWeight: "var(--weight-light)",
+          lineHeight: "var(--leading-none)",
+          letterSpacing: "var(--tracking-display)",
           color: "var(--text)",
-          marginBottom: "2.25rem",
+          marginBottom: "var(--space-32)",
         }}
       >
         delunalab
@@ -126,15 +150,15 @@ export function HeroContent() {
           style={{
             fontFamily: "var(--font-mono)",
             fontSize: "clamp(1.25rem, 2vw, 2rem)",
-            fontWeight: 300,
+            fontWeight: "var(--weight-light)",
             color: "var(--muted)",
-            letterSpacing: "0.02em",
+            letterSpacing: "var(--tracking-normal)",
             display: "inline-block",
             minWidth: "2.8rem",
             transition:
               "opacity var(--duration-5) var(--ease-out-soft), filter var(--duration-5) var(--ease-out-soft)",
             opacity: suffixVisible ? 1 : 0,
-            filter: suffixVisible ? "blur(0px)" : "blur(8px)",
+            filter: suffixVisible ? "blur(0px)" : "blur(var(--motion-blur-3))",
           }}
         >
           {cyclingSuffixes[suffixIndex]}
@@ -151,7 +175,7 @@ export function HeroContent() {
           marginBottom: "2.25rem",
         }}
       >
-        a virtual lab dedicated to{" "}
+        A virtual lab dedicated to{" "}
         <span
           style={{
             display: "inline-block",
@@ -162,12 +186,12 @@ export function HeroContent() {
             transition:
               "opacity var(--duration-5) var(--ease-out-soft), filter var(--duration-5) var(--ease-out-soft)",
             opacity: visible ? 1 : 0,
-            filter: visible ? "blur(0px)" : "blur(8px)",
+            filter: visible ? "blur(0px)" : "blur(var(--motion-blur-3))",
           }}
         >
           {cyclingWords[wordIndex]}
         </span>
-        each project here is an experiment at the boundary of artificial
+        Each project here is an experiment at the boundary of artificial
         intelligence, autonomous systems, bioinformatics, and
         production software.
       </p>

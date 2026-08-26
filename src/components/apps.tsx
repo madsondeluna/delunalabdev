@@ -6,44 +6,23 @@ import { FadeIn } from "./fade-in";
 import { useReducedMotion } from "./use-reduced-motion";
 import { apps, statusStyle, type App } from "@/data/apps";
 
-const badgeBase: React.CSSProperties = {
-  fontFamily: "var(--font-mono)",
-  fontSize: "0.625rem",
-  letterSpacing: "0.1em",
-  padding: "2px 8px",
-  borderRadius: "2px",
-  whiteSpace: "nowrap",
-};
-
 function CardBody({ app }: { app: App }) {
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          flexWrap: "wrap",
-          gap: "0.3rem",
-        }}
-      >
-        <div style={{ display: "flex", gap: "0.3rem" }}>
-          {app.type.map((t) => (
-            <span key={t} className={`badge-tag badge-type-${t}`} style={badgeBase}>
-              {t}
-            </span>
-          ))}
-        </div>
-        <span className={`badge-tag badge-status-${app.status}`} style={badgeBase}>
-          {statusStyle[app.status]?.label}
-        </span>
-      </div>
+      {/* O ESTADO fica sozinho na primeira linha. Ele dividia a linha com
+          as etiquetas de tipo por space-between, e bastavam tres tipos
+          para ele cair sozinho numa segunda linha, alinhado a direita,
+          orfao. Estado e a informacao que decide se vale clicar: ela nao
+          disputa fileira com rotulo de tecnologia. */}
+      <span className={`badge-tag badge-status-${app.status}`}>
+        {statusStyle[app.status]?.label}
+      </span>
 
       <h3
         style={{
-          fontSize: "0.95rem",
-          fontWeight: 400,
-          lineHeight: 1.3,
+          fontSize: "var(--text-15)",
+          fontWeight: "var(--weight-medium)",
+          lineHeight: "var(--leading-snug)",
           color: "var(--text)",
         }}
       >
@@ -52,22 +31,27 @@ function CardBody({ app }: { app: App }) {
 
       <p
         style={{
-          fontSize: "0.775rem",
+          fontSize: "var(--text-13)",
           color: "var(--muted)",
-          lineHeight: 1.6,
+          lineHeight: "var(--leading-normal)",
           flex: 1,
         }}
       >
         {app.description}
       </p>
 
-      <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
+      {/* Tipo e tecnologia num contentor SO. Eram dois, e cada um quebrava
+          por conta propria: cada grupo terminava com uma etiqueta sozinha
+          na ultima fileira. Juntos, cada linha se enche antes de quebrar,
+          e os dois respondem a mesma pergunta: do que isto e feito. */}
+      <div className="card-tags">
+        {app.type.map((t) => (
+          <span key={t} className="badge-tag">
+            {t}
+          </span>
+        ))}
         {app.tags.map((tag) => (
-          <span
-            key={tag}
-            className={`badge-tag badge-${tag}`}
-            style={{ ...badgeBase, fontSize: "0.6rem", padding: "2px 7px" }}
-          >
+          <span key={tag} className="badge-tag">
             {tag}
           </span>
         ))}
@@ -96,7 +80,7 @@ function AppCard({ app, index }: { app: App; index: number }) {
 
   // os cartoes do hero ficam sobre o canvas, entao o vidro tem o que
   // refratar; abaixo de 900px o canvas sai e o CSS devolve a superficie solida
-  const className = `app-card card-glass ${isLive ? "glass-lift" : ""} ${
+  const className = `app-card card-glass lit lit-edge ${
     popping ? "card-pop" : ""
   }`.trim();
 
@@ -105,13 +89,13 @@ function AppCard({ app, index }: { app: App; index: number }) {
   let card: React.ReactNode;
   if (!isLive) {
     card = (
-      <div className={className} aria-disabled="true">
+      <div className={className} data-lit aria-disabled="true">
         {body}
       </div>
     );
   } else if (isInternal) {
     card = (
-      <Link href={app.url} className={className}>
+      <Link href={app.url} className={className} data-lit>
         {body}
       </Link>
     );
@@ -120,6 +104,7 @@ function AppCard({ app, index }: { app: App; index: number }) {
       <a
         href={app.url}
         className={className}
+        data-lit
         target="_blank"
         rel="noopener noreferrer"
       >

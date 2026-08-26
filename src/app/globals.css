@@ -1,24 +1,22 @@
-@import "tailwindcss";
-@import "./pure/tokens.css";
+@import "./pure/theme.css";
 @import "./pure/patterns.css";
+@import "./pure/light.css";
+@import "./pure/motion.css";
 
-/* fontes do site, mantidas sobre os tokens do pure. tokens.css define
-   --font-sans/--font-mono/--font-display e vence a camada theme do
-   tailwind por ser CSS sem layer, entao a redeclaracao vem depois. */
-@theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-display: var(--font-cormorant);
-}
-
+/* As familias vem por next/font, que as auto-hospeda e expoe cada uma
+   numa variavel. Os tokens da linguagem nomeiam as familias por string,
+   entao o mapeamento acontece aqui: mesmas tres familias, so que
+   servidas do proprio dominio. */
 :root {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-display: var(--font-cormorant);
+  --font-sans:    var(--font-public-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono:    var(--font-spline-mono), Menlo, monospace;
+  --font-display: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
 }
 
+/* o caixa-baixa deliberado saiu. A linguagem pede sentence case em tudo:
+   caixa alta e caixa baixa forcadas tiram do leitor a informacao que a
+   propria letra carrega, e nomes proprios param de se distinguir. */
 body {
-  text-transform: lowercase;
   font-size: var(--text-15);
 }
 
@@ -359,60 +357,213 @@ body {
   animation: card-pop var(--duration-6) var(--ease-out-soft) forwards;
 }
 
-/* tag colors — light */
-.badge-python       { color: #a16207; background: rgba(161,98,7,0.08);    border: 1px solid rgba(161,98,7,0.25); }
-.badge-bash         { color: #4d7c0f; background: rgba(77,124,15,0.08);   border: 1px solid rgba(77,124,15,0.25); }
-.badge-javascript   { color: #b45309; background: rgba(180,83,9,0.08);    border: 1px solid rgba(180,83,9,0.25); }
-.badge-typescript   { color: #1d4ed8; background: rgba(29,78,216,0.08);   border: 1px solid rgba(29,78,216,0.25); }
-.badge-css          { color: #4338ca; background: rgba(67,56,202,0.08);   border: 1px solid rgba(67,56,202,0.25); }
-.badge-docker       { color: #1d4ed8; background: rgba(29,78,216,0.08);   border: 1px solid rgba(29,78,216,0.25); }
-.badge-scikit-learn { color: #c2410c; background: rgba(194,65,12,0.08);   border: 1px solid rgba(194,65,12,0.25); }
-.badge-tensorflow   { color: #b45309; background: rgba(180,83,9,0.08);    border: 1px solid rgba(180,83,9,0.25); }
-.badge-html         { color: #c2410c; background: rgba(194,65,12,0.08);   border: 1px solid rgba(194,65,12,0.25); }
-.badge-r            { color: #4338ca; background: rgba(67,56,202,0.08);   border: 1px solid rgba(67,56,202,0.25); }
-.badge-nextflow     { color: #047857; background: rgba(4,120,87,0.08);    border: 1px solid rgba(4,120,87,0.25); }
-.badge-nextjs       { color: #1e293b; background: rgba(30,41,59,0.06);    border: 1px solid rgba(30,41,59,0.2); }
-.badge-react        { color: #0369a1; background: rgba(3,105,161,0.08);   border: 1px solid rgba(3,105,161,0.25); }
-.badge-biopython    { color: #065f46; background: rgba(6,95,70,0.08);     border: 1px solid rgba(6,95,70,0.25); }
+/* ---------- o cartao sob o ponteiro ----------
 
-/* type colors — light */
-.badge-type-web  { color: #7c3aed; background: rgba(124,58,237,0.08);  border: 1px solid rgba(124,58,237,0.25); }
-.badge-type-cli  { color: #ea580c; background: rgba(234,88,12,0.08);   border: 1px solid rgba(234,88,12,0.25); }
-.badge-type-pip  { color: #0891b2; background: rgba(8,145,178,0.08);   border: 1px solid rgba(8,145,178,0.25); }
-.badge-type-api  { color: #059669; background: rgba(5,150,105,0.08);   border: 1px solid rgba(5,150,105,0.25); }
+   O que pesava nao era o levantar de 2px do .glass-lift: era a troca de
+   preenchimento do .card-glass, que salta de 0,42 para 0,62 de branco de
+   uma vez. Um salto binario le como piscada por mais amortecida que seja
+   a curva.
 
-/* status colors — light */
+   No lugar dele, a resposta vira GRADUAL e vem do ponteiro: o realce de
+   .lit anda com o cursor e o aro de .lit-edge acende do lado de onde a
+   luz vem, os dois multiplicados pela proximidade. A borda e a sombra
+   continuam respondendo, porque sao elas que dizem "isto e clicavel".
+
+   O par nomeado existe porque .card-glass:hover pesa duas classes: um
+   seletor de uma so empataria e perderia por ordem. */
+.app-card.card-glass:hover {
+  background-image: var(--glass-fill);
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+}
+
+/* ---------- seletor de modo ----------
+   Aglomerado liquido: quatro unidades fixas fundidas pelo filtro goo. O
+   modo ativo fica com a tinta forte e o inchaco; os outros, apagados. */
+.modes { --liquid-pad: var(--space-8); --liquid-size: var(--space-40); }
+
+.modes .liquid-item { color: var(--muted); }
+.modes .liquid-item[aria-pressed="true"] { color: var(--text); }
+
+/* o ativo fica inchado o tempo todo, nao so sob o ponteiro: e o estado,
+   e estado nao pode depender de onde o mouse esta */
+.modes:has(.liquid-item:nth-child(1)[aria-pressed="true"]) .liquid-blob:nth-child(1),
+.modes:has(.liquid-item:nth-child(2)[aria-pressed="true"]) .liquid-blob:nth-child(2),
+.modes:has(.liquid-item:nth-child(3)[aria-pressed="true"]) .liquid-blob:nth-child(3),
+.modes:has(.liquid-item:nth-child(4)[aria-pressed="true"]) .liquid-blob:nth-child(4) {
+  --liquid-swell: 1.12;
+}
+
+@media (pointer: coarse) {
+  .modes { --liquid-size: var(--hit-min-touch); }
+}
+
+.social { --liquid-pad: var(--space-8); --liquid-size: var(--space-40); }
+.social .liquid-item { color: var(--muted); transition: color var(--duration-3) var(--ease-standard); }
+.social .liquid-item:hover { color: var(--text); }
+
+@media (pointer: coarse) {
+  .social { --liquid-size: var(--hit-min-touch); }
+}
+
+/* ---------- o botao de explorar ----------
+   Vidro com o rotulo DENTRO, que e o que .pill faz. A gota liquida ficou
+   para tras porque unidade de aglomerado tem tamanho fixo e rotulo de
+   texto nao tem: o rotulo flutuando ao lado da gota lia como legenda
+   solta, nao como botao.
+
+   Quem se move e a seta. O botao nao muda de tamanho em momento nenhum,
+   nem no hover nem no clique. */
+.explore .icon {
+  transition:
+    transform var(--duration-3) var(--ease-out-expo),
+    opacity var(--duration-2) var(--ease-standard);
+}
+.explore:hover .icon { transform: translateX(var(--nudge-2)); }
+.explore.is-go .icon { animation: explore-go var(--duration-6) var(--ease-out-expo); }
+
+/* o salto de 40% para 41% e instantaneo e invisivel: e a seta
+   reaparecendo do outro lado, com a opacidade em zero nos dois quadros */
+@keyframes explore-go {
+  0%   { transform: translateX(0); opacity: 1; }
+  40%  { transform: translateX(var(--space-20)); opacity: 0; }
+  41%  { transform: translateX(calc(var(--space-20) * -1)); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .explore.is-go .icon { animation: none; }
+  .explore:hover .icon { transform: none; }
+}
+
+/* ---------- assinatura ----------
+   Um retrato pequeno ao lado da linha de autoria. Ele diz quem assina o
+   laboratorio sem virar o assunto: o assunto aqui e o software, e um
+   retrato grande disputaria o olho com os cartoes. */
+/* Centrado no eixo do circulo. O alinhamento pelo topo foi tentado e
+   descartado na tela: com duas linhas contra um retrato de 160px o bloco
+   ficava colado na borda de cima e o resto do circulo abaixo dele lia
+   como vao. */
+.byline { display: flex; align-items: center; gap: var(--space-20); }
+
+/* O defeito era hierarquia, nao diagramacao: as duas linhas tinham o
+   mesmo tamanho, a mesma cor e a mesma familia mono, entao liam como um
+   bloco cinza sem inicio. O nome sobe para a lingua e para a tinta
+   forte; o cargo fica em mono apagado, um degrau abaixo. */
+.byline-text { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+.byline-name {
+  font-size: var(--text-18);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-snug);
+  color: var(--text);
+}
+.byline-role {
+  font-family: var(--font-mono);
+  font-size: var(--text-13);
+  letter-spacing: var(--tracking-eyebrow);
+  line-height: var(--leading-snug);
+  color: var(--muted);
+}
+
+.byline-photo {
+  display: grid;
+  flex: none;
+  inline-size: var(--photo-lg);
+  block-size: var(--photo-lg);
+  border-radius: var(--radius-circle);
+  overflow: hidden;
+  background: var(--dim);
+  border: var(--hairline) solid var(--border);
+  box-shadow: var(--shadow-lens);
+}
+.byline-photo img {
+  inline-size: 100%;
+  block-size: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center 18%;
+  transform: scale(1.28);
+}
+
+/* traco preto sobre branco nao entra cru num modo escuro: o quadrado
+   branco vira um farol dentro do circulo. Nos escuros o desenho inverte,
+   e a leitura e a mesma pelo outro lado. */
+.byline-photo .drawn {
+  object-position: center;
+  transform: none;
+  background: var(--paper-50);
+}
+
+:root.deep-blue .byline-photo .drawn,
+:root.dark .byline-photo .drawn {
+  filter: invert(1);
+  background: none;
+}
+
+@media (max-width: 900px) {
+  .byline-photo { inline-size: var(--photo-md); block-size: var(--photo-md); }
+}
+
+/* ---------- etiquetas ----------
+
+   A paleta inventada saiu daqui inteira: eram 60 e poucas cores em hex,
+   uma por tecnologia, mais um jogo por modo. Nenhuma delas pertencia a
+   linguagem, e a regra que elas quebravam nao e de gosto: cor com
+   significado reservado e --status-*, e serie de dado e --chart-n, e
+   nenhuma das duas familias existe para colorir o nome de uma ferramenta.
+
+   O que ficou e a separacao que importa:
+
+     ESTADO do app (lancado, beta, em desenvolvimento) sai de --status-*,
+     que e cor de significado reservado, e vem SEMPRE com rotulo em
+     texto: quem nao separa verde de laranja continua lendo o estado.
+
+     TIPO e TECNOLOGIA (web, cli, pip, python, docker) nao sao estado nem
+     serie: sao rotulo. Vao em tinta neutra, com a borda fazendo o
+     recorte, e e o .tag da propria linguagem. */
+
+.badge-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-8);
+  border-radius: var(--radius-control);
+  border: var(--hairline) solid var(--border);
+  background: var(--surface);
+  --surface-context: var(--surface);
+  font-family: var(--font-mono);
+  font-size: var(--text-11);
+  letter-spacing: var(--tracking-wide);
+  color: var(--muted);
+}
+
+/* o estado carrega a tinta reservada na MARCA, nao no fundo: um cartao
+   com fundo tingido some no meio de seis, e o ponto e ler a diferenca */
 .badge-status-live,
-.badge-status-launched    { color: #16a34a; background: rgba(34,197,94,0.12);   border: 1px solid rgba(34,197,94,0.35); }
-.badge-status-beta        { color: #d97706; background: rgba(245,158,11,0.12);  border: 1px solid rgba(245,158,11,0.35); }
-.badge-status-development { color: #2563eb; background: rgba(59,130,246,0.12);  border: 1px solid rgba(59,130,246,0.35); }
-.badge-status-portfolio   { color: #6b7280; background: rgba(107,114,128,0.1);  border: 1px solid rgba(107,114,128,0.3); }
+.badge-status-launched,
+.badge-status-beta,
+.badge-status-development,
+.badge-status-portfolio {
+  gap: var(--space-6);
+  color: var(--text);
+}
 
-/* tag colors — deep-blue */
-:root.deep-blue .badge-python       { color: #fbbf24; background: rgba(251,191,36,0.1);   border-color: rgba(251,191,36,0.25); }
-:root.deep-blue .badge-bash         { color: #a3e635; background: rgba(163,230,53,0.1);   border-color: rgba(163,230,53,0.25); }
-:root.deep-blue .badge-javascript   { color: #fbbf24; background: rgba(251,191,36,0.1);   border-color: rgba(251,191,36,0.25); }
-:root.deep-blue .badge-typescript   { color: #60a5fa; background: rgba(96,165,250,0.1);   border-color: rgba(96,165,250,0.25); }
-:root.deep-blue .badge-css          { color: #818cf8; background: rgba(129,140,248,0.1);  border-color: rgba(129,140,248,0.25); }
-:root.deep-blue .badge-docker       { color: #60a5fa; background: rgba(96,165,250,0.1);   border-color: rgba(96,165,250,0.25); }
-:root.deep-blue .badge-scikit-learn { color: #fb923c; background: rgba(251,146,60,0.1);   border-color: rgba(251,146,60,0.25); }
-:root.deep-blue .badge-tensorflow   { color: #fb923c; background: rgba(251,146,60,0.1);   border-color: rgba(251,146,60,0.25); }
-:root.deep-blue .badge-html         { color: #fb923c; background: rgba(251,146,60,0.1);   border-color: rgba(251,146,60,0.25); }
-:root.deep-blue .badge-r            { color: #818cf8; background: rgba(129,140,248,0.1);  border-color: rgba(129,140,248,0.25); }
-:root.deep-blue .badge-nextflow     { color: #34d399; background: rgba(52,211,153,0.1);   border-color: rgba(52,211,153,0.25); }
-:root.deep-blue .badge-nextjs       { color: #e2e8f0; background: rgba(226,232,240,0.08); border-color: rgba(226,232,240,0.2); }
-:root.deep-blue .badge-react        { color: #7dd3fc; background: rgba(125,211,252,0.1);  border-color: rgba(125,211,252,0.25); }
-:root.deep-blue .badge-biopython    { color: #6ee7b7; background: rgba(110,231,183,0.1);  border-color: rgba(110,231,183,0.25); }
+.badge-status-live::before,
+.badge-status-launched::before,
+.badge-status-beta::before,
+.badge-status-development::before,
+.badge-status-portfolio::before {
+  content: "";
+  inline-size: var(--space-6);
+  block-size: var(--space-6);
+  border-radius: var(--radius-circle);
+  background: var(--secondary);
+}
 
-/* type colors — deep-blue */
-:root.deep-blue .badge-type-web  { color: #a78bfa; background: rgba(167,139,250,0.1);  border-color: rgba(167,139,250,0.25); }
-:root.deep-blue .badge-type-cli  { color: #fb923c; background: rgba(251,146,60,0.1);   border-color: rgba(251,146,60,0.25); }
-:root.deep-blue .badge-type-pip  { color: #22d3ee; background: rgba(34,211,238,0.1);   border-color: rgba(34,211,238,0.25); }
-:root.deep-blue .badge-type-api  { color: #34d399; background: rgba(52,211,153,0.1);   border-color: rgba(52,211,153,0.25); }
-
-/* status colors — deep-blue */
-:root.deep-blue .badge-status-live,
-:root.deep-blue .badge-status-launched    { color: #4ade80; background: rgba(74,222,128,0.1);  border-color: rgba(74,222,128,0.25); }
-:root.deep-blue .badge-status-beta        { color: #fbbf24; background: rgba(251,191,36,0.1);  border-color: rgba(251,191,36,0.25); }
-:root.deep-blue .badge-status-development { color: #60a5fa; background: rgba(96,165,250,0.1);  border-color: rgba(96,165,250,0.25); }
-:root.deep-blue .badge-status-portfolio   { color: #9ca3af; background: rgba(156,163,175,0.1); border-color: rgba(156,163,175,0.25); }
+.badge-status-live::before,
+.badge-status-launched::before { background: var(--status-good); }
+.badge-status-beta::before { background: var(--status-warning); }
+.badge-status-development::before { background: var(--status-serious); }

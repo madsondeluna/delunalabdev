@@ -3,6 +3,14 @@ import { HeroCanvas } from "@/components/hero-canvas";
 import { HeroContent } from "@/components/hero";
 import { AppsGrid } from "@/components/apps";
 
+const SOCIAL = [
+  { label: "Portfolio", url: "https://madsondeluna.com", icon: "user" },
+  { label: "GitHub", url: "https://github.com/madsondeluna", icon: "branch" },
+  { label: "Twitter", url: "https://x.com/madsondeluna", icon: "send" },
+  { label: "LinkedIn", url: "https://www.linkedin.com/in/madsonaragao/", icon: "users" },
+  { label: "Mail", url: "mailto:madsondeluna@gmail.com", icon: "mail" },
+];
+
 export default function Page() {
   // static export: evaluated at build time
   const year = new Date().getFullYear();
@@ -31,41 +39,40 @@ export default function Page() {
           <span
             style={{
               fontFamily: "var(--font-mono)",
-              fontSize: "0.625rem",
+              fontSize: "var(--text-11)",
               color: "var(--muted)",
             }}
           >
             &copy; {year} gromads
           </span>
 
-          <div
-            style={{
-              display: "flex",
-              gap: "1.5rem",
-              flexWrap: "wrap",
-              justifyContent: "center",
-              pointerEvents: "auto",
-            }}
-          >
-            {[
-              { label: "portfolio", url: "https://madsondeluna.com" },
-              { label: "github", url: "https://github.com/madsondeluna" },
-              { label: "twitter", url: "https://x.com/madsondeluna" },
-              { label: "linkedin", url: "https://www.linkedin.com/in/madsonaragao/" },
-              { label: "mail", url: "mailto:madsondeluna@gmail.com" },
-            ].map((link) => (
-              <a
-                key={link.label}
-                href={link.url}
-                className="link-muted"
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "0.625rem",
-                }}
-              >
-                {link.label}
-              </a>
-            ))}
+          {/* Aglomerado liquido: cinco gotas de tamanho fixo que se fundem
+              pelo filtro goo. Os rotulos viram icone e aria-label, porque
+              a unidade do aglomerado precisa ter largura fixa e um rotulo
+              de texto nao tem. */}
+          <div className="liquid liquid-tight social" style={{ pointerEvents: "auto" }}>
+            <div className="liquid-sheet" aria-hidden="true">
+              {SOCIAL.map((l) => (
+                <span key={l.label} className="liquid-blob" />
+              ))}
+            </div>
+            <div className="liquid-content">
+              {SOCIAL.map((l) => (
+                <a
+                  key={l.label}
+                  className="liquid-item"
+                  href={l.url}
+                  aria-label={l.label}
+                  title={l.label}
+                  target={l.url.startsWith("mailto") ? undefined : "_blank"}
+                  rel="noopener noreferrer"
+                >
+                  <svg className="icon icon-sm" aria-hidden="true">
+                    <use href={`/pure/icons.svg#${l.icon}`} />
+                  </svg>
+                </a>
+              ))}
+            </div>
           </div>
         </footer>
       </section>
