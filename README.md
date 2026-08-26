@@ -10,7 +10,7 @@ Live at [delunalab.dev](https://delunalab.dev).
 - **React 19** — UI component library
 - **TypeScript** — static typing
 - **Tailwind CSS 4** — utility-first CSS
-- **Cloudflare Pages** — hosting and CDN, deployed from the `main` branch on every push
+- **GitHub Pages** — hosting, deployed from the `main` branch on every push. An earlier version of this file said Cloudflare Pages; the deployments are `github-pages`, and that is where to look when a deploy fails
 
 ## Fonts
 
@@ -35,7 +35,7 @@ Open [http://localhost:3000](http://localhost:3000).
 node node_modules/next/dist/bin/next build
 ```
 
-Output goes to `out/`. Cloudflare Pages runs `npm run build` and serves that directory.
+Output goes to `out/`. The build runs `npm run build` and serves that directory.
 
 ## Links
 
