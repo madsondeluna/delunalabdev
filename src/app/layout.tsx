@@ -75,6 +75,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
+  /* a moldura abre com o fundo do modo padrao, o grafite */
+  themeColor: "#0E0F13",
   width: "device-width",
   initialScale: 1,
 };

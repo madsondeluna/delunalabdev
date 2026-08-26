@@ -22,6 +22,8 @@ export function ThemeToggle() {
   const [mode, setMode] = useState("");
 
   useEffect(() => {
+    /* o script de pre-pintura ja pos a classe; aqui so lemos o que ele
+       decidiu, para o botao marcado bater com a tela */
     setMode(CLASSES.find((c) => document.documentElement.classList.contains(c)) ?? "");
   }, []);
 

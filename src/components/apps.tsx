@@ -80,7 +80,7 @@ function AppCard({ app, index }: { app: App; index: number }) {
 
   // os cartoes do hero ficam sobre o canvas, entao o vidro tem o que
   // refratar; abaixo de 900px o canvas sai e o CSS devolve a superficie solida
-  const className = `app-card card-glass lit lit-edge ${
+  const className = `app-card lit ${
     popping ? "card-pop" : ""
   }`.trim();
 

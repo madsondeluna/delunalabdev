@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script>/* o modo antes da primeira pintura, na mesma chave do site: sem isto a
-    ferramenta abre no claro e pisca. "dark" guardado antes de 1.6.0
-    significava o azul, entao ele e traduzido. */
-try{var m=localStorage.getItem("theme");if(m==="dark")m="deep-blue";if(m&&m!=="light")document.documentElement.classList.add(m)}catch(e){}</script>
+    <script>/* o modo antes da primeira pintura, na mesma chave do site. O PADRAO e
+    o escuro grafite: quem nunca escolheu cai nele em vez do claro. Um
+    "dark" guardado antes de 1.6.0 significava o azul e e traduzido. */
+try{var m=localStorage.getItem("theme");if(m===null)m="dark";else if(m==="dark")m="deep-blue";if(m&&m!=="light")document.documentElement.classList.add(m)}catch(e){document.documentElement.classList.add("dark")}</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDBViewer</title>

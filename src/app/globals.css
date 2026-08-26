@@ -127,12 +127,26 @@ body {
 /* grade de vidro: o gap deixa o canvas do hero aparecer entre os cartoes,
    entao o container nao pinta a hairline. cada cartao carrega a sua
    propria aresta, que e o que o material pede. */
+/* ---------- a grade de aplicacoes ----------
+
+   Mesma grade do madsondeluna.com: os vaos de 1px sobre --border
+   desenham a estrutura inteira, e a celula nao tem borda, nem raio, nem
+   sombra propria. O raio mora na GRADE e overflow recorta as quatro
+   pontas, entao o bloco le como uma peca so.
+
+   Seis cartoes flutuando com sombra individual empilhavam duas leituras
+   de profundidade na mesma area, e a folga entre eles competia com a
+   folga do resto da pagina. */
 .apps-grid {
   display: grid;
-  /* minmax(0, 1fr) instead of 1fr: without it the cards' min-content width
-     forces uneven columns that overflow the container */
+  /* minmax(0, 1fr) e nao 1fr: sem ele a largura de conteudo minimo dos
+     cartoes forca colunas desiguais que transbordam o contentor */
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-8);
+  gap: var(--hairline);
+  background: var(--border);
+  border: var(--hairline) solid var(--border);
+  border-radius: var(--radius-surface);
+  overflow: hidden;
 }
 
 .app-card {
@@ -142,7 +156,15 @@ body {
   gap: var(--space-12);
   height: 100%;
   color: inherit;
+  background: var(--surface);
+  --surface-context: var(--surface);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  transition: background var(--duration-3) var(--ease-standard);
 }
+
+.app-card:hover { background: var(--surface-hover); }
 
 /* under 1200px a 3-up grid inside the 50% column leaves ~100px of card content,
    narrower than the widest status badge */
@@ -371,10 +393,6 @@ body {
 
    O par nomeado existe porque .card-glass:hover pesa duas classes: um
    seletor de uma so empataria e perderia por ordem. */
-.app-card.card-glass:hover {
-  background-image: var(--glass-fill);
-}
-
 .card-tags {
   display: flex;
   flex-wrap: wrap;
@@ -448,20 +466,38 @@ body {
    descartado na tela: com duas linhas contra um retrato de 160px o bloco
    ficava colado na borda de cima e o resto do circulo abaixo dele lia
    como vao. */
-.byline { display: flex; align-items: center; gap: var(--space-20); }
+/* A assinatura escapa da largura da coluna de texto. Ela e a unica coisa
+   do heroi que precisa de uma linha inteira sem quebrar, e prender o
+   nome aos 360px da coluna era o que forcava a quebra no hifen. A prosa
+   abaixo continua na medida da coluna, que e onde a medida importa. */
+.byline {
+  display: flex;
+  align-items: center;
+  gap: var(--space-20);
+  width: max-content;
+  max-width: none;
+}
 
 /* O defeito era hierarquia, nao diagramacao: as duas linhas tinham o
    mesmo tamanho, a mesma cor e a mesma familia mono, entao liam como um
    bloco cinza sem inicio. O nome sobe para a lingua e para a tinta
    forte; o cargo fica em mono apagado, um degrau abaixo. */
 .byline-text { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+/* O nome inteiro numa linha so: a quebra automatica caia no meio do
+   hifen de Luna-Aragao, e um nome partido ao meio nao le como nome.
+
+   O tamanho desce um degrau para caber, e o preco esta declarado: ele
+   passa a competir menos com o titulo grande logo abaixo, que e o que
+   se quer de uma assinatura de qualquer forma. */
 .byline-name {
-  font-size: var(--text-18);
+  white-space: nowrap;
+  font-size: var(--text-20);
   font-weight: var(--weight-medium);
   line-height: var(--leading-snug);
   color: var(--text);
 }
 .byline-role {
+  white-space: nowrap;
   font-family: var(--font-mono);
   font-size: var(--text-13);
   letter-spacing: var(--tracking-eyebrow);
@@ -489,58 +525,33 @@ body {
   transform: scale(1.28);
 }
 
-/* ---------- o desenho acompanha o modo ----------
+/* ---------- o avatar e padrao ----------
+   Ele NAO acompanha o modo aqui, a pedido: o desenho entra como foi
+   feito, traco preto sobre branco, e o circulo carrega o branco dele em
+   vez da superficie do tema.
 
-   O avatar e traco preto sobre branco opaco. Entrar cru custa nos dois
-   lados: num modo escuro o quadrado branco vira um farol dentro do
-   circulo, e num modo claro ele apaga a superficie que o circulo pinta.
-
-   `filter: invert(1)` resolvia metade e mentia na outra: ele troca preto
-   por branco, mas o FUNDO continua opaco e o circulo nunca mostra o modo.
-
-   A mistura resolve as duas de uma vez, e sem arquivo novo:
-
-     nos modos claros, `multiply` deixa cair o branco (multiplicar por 1
-     nao muda nada) e mantem o traco (multiplicar por 0 escurece tudo).
-     O traco fica escuro sobre a superficie do modo.
-
-     nos escuros, o desenho inverte primeiro e `screen` deixa cair o
-     preto pela razao espelhada. O traco fica claro sobre a superficie
-     do modo.
-
-   Nos dois casos o fundo do desenho DESAPARECE e quem aparece atras dele
-   e a superficie que o circulo pinta, entao ele muda de cor junto com a
-   pagina em vez de carregar a propria.
-
-   `isolation: isolate` no circulo prende a mistura ali dentro: sem ela o
-   blend procura o proximo contexto de empilhamento e o desenho mistura
-   com a chuva de caracteres do fundo. */
+   A alternativa existiu e foi retirada: multiply nos modos claros e
+   invert mais screen nos escuros faziam o fundo do desenho desaparecer e
+   a marca mudar de cor com a pagina. Ela continua no portfolio, onde o
+   retrato e outro. A regra fica registrada aqui porque religar e voltar
+   quatro linhas, nao redescobrir a tecnica. */
 .byline-photo {
-  isolation: isolate;
-  background: var(--surface);
-  --surface-context: var(--surface);
+  background: var(--paper-50);
+  --surface-context: var(--paper-50);
 }
 
-/* O arquivo ja vem enquadrado para uso circular, entao ele PREENCHE o
-   circulo e nada e encolhido para caber. Uma tentativa de encaixar por
-   escala foi feita e revertida: ela resolvia um corte que era do desenho
-   de prova, nao do arquivo real, e encolher uma composicao ja resolvida
-   e estragar o enquadramento de quem a fez. */
 .byline-photo .drawn {
   object-fit: cover;
   object-position: center;
   transform: none;
-  mix-blend-mode: multiply;
-}
-
-:root.deep-blue .byline-photo .drawn,
-:root.dark .byline-photo .drawn {
-  filter: invert(1);
-  mix-blend-mode: screen;
 }
 
 @media (max-width: 900px) {
   .byline-photo { inline-size: var(--photo-md); block-size: var(--photo-md); }
+  /* abaixo de 900 nao ha largura para o nome inteiro numa linha: aqui a
+     quebra volta, e volta onde ela deve cair */
+  .byline { width: auto; }
+  .byline-name { white-space: normal; font-size: var(--text-16); }
 }
 
 /* ---------- etiquetas ----------
