@@ -118,8 +118,7 @@ export function HeroContent() {
         <span className="byline-photo">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            className="drawn"
-            src="/profile/face-3.png"
+            src="/profile/me.jpeg"
             alt="Madson A. de Luna-Aragão"
             width={160}
             height={160}
