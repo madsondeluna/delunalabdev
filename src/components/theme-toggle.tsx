@@ -32,7 +32,7 @@ export function ThemeToggle() {
     document.documentElement.classList.remove(...CLASSES);
     if (next) document.documentElement.classList.add(next);
     try {
-      localStorage.setItem("theme", next || "light");
+      localStorage.setItem("mode", next || "light");
     } catch {}
     /* a moldura do navegador acompanha o fundo do modo: sem isto ela fica
        com a cor do sistema e a pagina termina antes da janela */
