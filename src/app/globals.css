@@ -615,27 +615,13 @@ body {
 .badge-status-development::before { background: var(--status-serious); }
 
 /* O estado ocupa so a largura do proprio rotulo. Como filho de um cartao
-   em coluna flex ele esticava ate a borda, e uma barra cheia lia como
-   campo de formulario, nao como etiqueta.
-
-   O fundo leva a tinta do estado diluida e a borda a mesma tinta um
-   pouco mais forte; o texto fica em --text, entao o contraste nao
-   depende da cor. Portfolio nao e estado de produto e fica neutro. */
+   em coluna flex ele esticava ate a borda. Forma, borda e fundo sao os
+   mesmos das outras etiquetas: a cor do estado fica so no ponto.
+   Fundo tingido e pilula oval foram testados e recusados (2026-11-20). */
 .badge-status-live,
 .badge-status-launched,
 .badge-status-beta,
 .badge-status-development,
 .badge-status-portfolio {
-  --status-ink: var(--secondary);
   align-self: flex-start;
-  padding: var(--space-4) var(--space-10) var(--space-4) var(--space-8);
-  border-radius: var(--radius-circle);
-  border-color: color-mix(in oklab, var(--status-ink) 38%, transparent);
-  background: color-mix(in oklab, var(--status-ink) 16%, var(--surface));
-  font-weight: var(--weight-medium);
 }
-.badge-status-live,
-.badge-status-launched { --status-ink: var(--status-good); }
-.badge-status-beta { --status-ink: var(--status-warning); }
-.badge-status-development { --status-ink: var(--status-serious); }
-.badge-status-portfolio { background: var(--surface); }
